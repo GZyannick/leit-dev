@@ -1,5 +1,5 @@
 const leitnerBox = () => {
-    return ( <div> 
+    return ( <div className="container"> 
         leitner box
     </div> );
 }
