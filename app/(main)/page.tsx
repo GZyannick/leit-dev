@@ -1,7 +1,9 @@
-import Image from 'next/image'
+import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
-    <div>Leitner env</div>
+    <div>
+      <UserButton afterSignOutUrl="/"/>
+    </div>
   )
 }
