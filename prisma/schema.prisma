@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id String @id @default(uuid())
+  userId String @unique
+  name String
+  email String @db.Text
+  Lcards Lcard[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Boxes {
+  BOX1
+  BOX2
+  BOX3
+  BOX4
+  BOX5
+  LEARNED
+}
+
+model Lcard {
+  id String @id @default(uuid())
+
+  question String
+  answer String 
+  box Boxes @default(BOX1) 
+
+  profileId String
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+ @@index([profileId])
+
+}
