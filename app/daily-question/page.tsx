@@ -11,7 +11,7 @@ const DailyPage = () => {
         <div className="container pt-8 h-full flex flex-col">
             <h1 className="text-2xl ">Daily question</h1>
 
-            <div className="flex flex-1 justify-center items-center ">
+            <div className="">
                     <GetQuestions/>
             </div>
         </div>
