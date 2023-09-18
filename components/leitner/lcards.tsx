@@ -1,30 +1,29 @@
-import { currentProfile } from "@/lib/current-profile";
+
 import {db} from "@/lib/db"
 import { redirect } from "next/navigation";
+import { InitialProfile } from "@/lib/initial-profile";
 
+const Lcards = async ( props: {box: string}) => {
 
-const Lcards = async ( props: {cbox: string}) => {
-    const profile = currentProfile();
-    if(!profile) return redirect("/")
+    const profile = InitialProfile();
+    if(!profile) return redirect("/");
 
     const lcards = await db.lcard.findMany({
         where: {
             profileId: profile.id,
-            box: props.cbox,
+            box: props.box,
         }
-    })
-
-    console.log(lcards)
-    return ( 
-        <li>
-            {lcards.map( (card, i) => (
-               <div key={`card-${i}`}>
-                 <p>{card.question}</p>
-                <p>{card.answer}</p>
-               </div>
-            ))}
-        </li>
-     );
+    });
+ return (
+    <li> {/* peut etre un composant plus tard */}
+        {lcards.map( (card, i) => (
+        <div key={`card-${i}`}>
+            <p>{card.question}</p>
+            <p>{card.answer}</p>
+        </div>
+        ))}
+    </li>
+ )
 }
  
 export default Lcards;

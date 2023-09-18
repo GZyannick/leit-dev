@@ -1,23 +1,38 @@
+import Link from  'next/link';
+import { Boxes  } from "@prisma/client";
 
+//ui
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
-import { InitialProfile } from "@/lib/initial-profile";
+
+// personal method
 import InitialLeitnerForm from "@/components/modals/initial-Leitner-Form";
-import { LBoxes } from "@/components/leitner/lboxes";
+import Lcards from '@/components/leitner/lcards';
 
 const LeitnerPage = () => {
+
+    const boxes = Object.keys(Boxes);
     return (
         <div className="container pt-8"> 
             <h3 className="text-2xl">Leitner Box</h3>
            
 
             <div className="grid gap-8 grid-cols-5">
-
-                <LBoxes/>
+                {
+                    boxes.map((box) => (
+                        <Card key={box} className="h-64 p-6">
+                            <ul>
+                                <Lcards box={box}/>
+                            </ul>
+                        </Card>
+                    ))
+                }
             </div>
             
             <div className="mt-8">
-                <Button className="mr-4">Daily question</Button>
+                <Link href={"/daily-question"}>
+                    <Button className="mr-4">Daily question</Button>
+                </Link>
                 <InitialLeitnerForm/>
             </div>
         </div>
