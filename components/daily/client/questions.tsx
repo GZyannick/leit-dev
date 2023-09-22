@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import React, { useEffect, useState, useTransition } from "react";
+import { UpdateQuestion } from "@/app/daily-question/actions";
 import { Button } from '@/components/ui/button';
 import { Progress } from "@/components/ui/progress";
 import {
@@ -14,12 +14,27 @@ import {
   } from "@/components/ui/card"
 
 import Link  from "next/link";
+import { Boxes } from "@prisma/client";
+type Props = {
+    questions: {
+        id: string,
+        question: string,
+        answer: string,
+        box: string
+    }[],
 
-const Questions = (props: {questions: {id: number, question: string, answer: string}[] }) => {
+    children: any,
+}
+
+// const Questions = (props: {children: any,questions: {id: number, question: string, answer: string}[] }) => {
+const Questions = (props: Props) => {
+
     const [currentQuestionindex, setCurrentQuestionindex] = useState(0);
     const [currentProgress, setCurrentProgress]= useState(0);
     const [showResponse, setShowResponse] = useState(false);
     const [questionResponse, setQuestionResponse] = useState("")
+    let [isPending, startTransition] = useTransition();
+
 
     useEffect(() => {
         setCurrentProgress( Math.round((currentQuestionindex  / props.questions.length) * 100))
@@ -29,10 +44,20 @@ const Questions = (props: {questions: {id: number, question: string, answer: str
         );
     }, [currentProgress, currentQuestionindex, showResponse]);
 
-    const nextQuestion = () => {
+    const nextQuestion = (isTrue: boolean) => {
+
+        UpdateQuestion({
+            questionId: props.questions[currentQuestionindex].id,
+            box: Boxes.BOX5,
+            isTrue
+        })
+
         setCurrentQuestionindex(currentQuestionindex + 1);
         setShowResponse(false);
+
     }
+
+
 
     if(currentQuestionindex <= props.questions.length - 1 ){
         return ( 
@@ -54,16 +79,15 @@ const Questions = (props: {questions: {id: number, question: string, answer: str
                             </p>
                         </CardContent>
                         <CardFooter className="pb-4 ">
+                    
                         </CardFooter>
                     </Card>
 
                 </div>
-
                 <div className="flex justify-between items-center px-4 pt-8 w-64">
-                        <Button variant={"outline"} onClick={nextQuestion} className="border-red-300 rounded-full">0</Button>
-                        <Button variant={"outline"} onClick={nextQuestion} className="border-green-300 rounded-full">0</Button>
-                    </div>
-                {/* <Button onClick={nextQuestion} className="my-16"> Next </Button> */}
+                    <Button variant={"outline"} onClick={() => startTransition(() => nextQuestion(false))} className="border-red-300 rounded-full">False</Button>
+                    <Button variant={"outline"} onClick={() => startTransition(() => nextQuestion(true))} className="border-green-300 rounded-full">True</Button>
+                </div>
             </div>
          );
         
@@ -106,3 +130,38 @@ export default Questions;
         }
     </p>
 */}
+
+
+
+// IDEEEE https://github.com/vercel/next.js/discussions/49345
+
+// 'use client';
+// import { useState, useTransition } from 'react';
+
+// import { useRouter } from 'next/navigation';
+
+// export const Example = ({ serverDataList }: { serverDataList: string[] }) => {
+//   const [isPending, setPending] = useState(false);
+//   const [isTransitionStarted, startTransition] = useTransition();
+//   const router = useRouter();
+
+//   const isMutating = isPending || isTransitionStarted;
+
+//   const handlePerformServerMutation = () => {
+//     setPending(true);
+//     // update server data here
+//     //
+//     // then, start a transition
+//     startTransition(router.refresh);
+//     setPending(false);
+//   };
+
+//   return (
+//     <div>
+//       <button onClick={handlePerformServerMutation}>Add item</button>
+//       {isMutating
+//         ? 'updating...'
+//         : serverDataList.map((item) => <div key={item}>{item}</div>)}
+//     </div>
+//   );
+// };
