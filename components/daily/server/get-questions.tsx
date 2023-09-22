@@ -5,7 +5,6 @@ import { Boxes } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 import Questions from "@/components/daily/client/questions";
-import UpdateQuestion from "@/components/daily/server/update-question";
 
 
 const GetQuestions = async () => {
