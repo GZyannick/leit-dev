@@ -1,12 +1,14 @@
+
 import { InitialProfile } from "@/lib/initial-profile";
 import { db } from "@/lib/db";
 import { Boxes } from "@prisma/client";
 import { redirect } from "next/navigation";
-import Questions from "@/components/daily/questions";
+
+import Questions from "@/components/daily/client/questions";
 
 
 const GetQuestions = async () => {
-    let questions: {id: number, question: string, answer:string}[] = []
+    let questions: {id: number, question: string, answer:string, box: string}[] = []
     const profile = InitialProfile();
     if(!profile) return redirect("/");
 
@@ -40,10 +42,14 @@ const GetQuestions = async () => {
                 break;
         }
     });
+    
+
+
+
     if(questions.length === 0) return <h1>You have any question today</h1>
 
     return (
-        <Questions questions={questions}/>
+        <Questions questions={questions} />
     );
 }
  // je dois transferer ça dans un utils 
