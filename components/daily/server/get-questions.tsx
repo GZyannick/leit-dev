@@ -8,7 +8,7 @@ import Questions from "@/components/daily/client/questions";
 
 
 const GetQuestions = async () => {
-    let questions: {id: number, question: string, answer:string, box: string}[] = []
+    let questions: {id: number, question: string, answer:string, box: Boxes|string }[] = []
     const profile = InitialProfile();
     if(!profile) return redirect("/");
 

@@ -48,7 +48,7 @@ const Questions = (props: Props) => {
 
         UpdateQuestion({
             questionId: props.questions[currentQuestionindex].id,
-            box: Boxes.BOX5,
+            box: props.questions[currentQuestionindex].box,
             isTrue
         })
 
