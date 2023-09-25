@@ -1,9 +1,12 @@
 "use client";
 
+
+
 import React, { useEffect, useState, useTransition } from "react";
 import { UpdateQuestion } from "@/app/daily-question/actions";
 import { Button } from '@/components/ui/button';
 import { Progress } from "@/components/ui/progress";
+
 import {
     Card,
     CardContent,
@@ -23,7 +26,6 @@ type Props = {
         box: string
     }[],
 
-    children: any,
 }
 
 // const Questions = (props: {children: any,questions: {id: number, question: string, answer: string}[] }) => {
@@ -88,6 +90,7 @@ const Questions = (props: Props) => {
                     <Button variant={"outline"} onClick={() => startTransition(() => nextQuestion(false))} className="border-red-300 rounded-full">False</Button>
                     <Button variant={"outline"} onClick={() => startTransition(() => nextQuestion(true))} className="border-green-300 rounded-full">True</Button>
                 </div>
+                <Button ><Link href="/leitner-box">Leitner</Link></Button>
             </div>
          );
         

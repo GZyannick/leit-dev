@@ -8,8 +8,8 @@ import Questions from "@/components/daily/client/questions";
 
 
 const GetQuestions = async () => {
-    let questions: {id: number, question: string, answer:string, box: Boxes|string }[] = []
-    const profile = InitialProfile();
+    let questions: {id: string, question: string, answer:string, box: Boxes }[] = []
+    const profile: any = InitialProfile();
     if(!profile) return redirect("/");
 
     const lcards = await db.lcard.findMany({ 
@@ -22,7 +22,7 @@ const GetQuestions = async () => {
     const today: Date = new Date()
 
     lcards.forEach((card) => {
-        const dayBetween = Math.floor((today - card.updatedAt) / (1000 * 60 * 60 * 24))
+        const dayBetween = Math.floor((today.getTime() - card.updatedAt.getTime()) / (1000 * 60 * 60 * 24))
         if (dayBetween === 0) return;
         switch (card.box){
             case "BOX1":

@@ -7,18 +7,18 @@ import { currentProfile} from "@/lib/current-profile";
 
 
 
-export async function UpdateQuestion(req: {questionId: string, box: Boxes, isTrue: boolean}) {
-    const profile = currentProfile();
+export async function UpdateQuestion(req: {questionId: string, box: Boxes|string, isTrue: boolean}) {
+    const profile: any = currentProfile();
     if(!profile) return;
     
     console.log("THIS IS ME", req)
 
     let newBox
     switch (req.box) {
-        case Boxes.BOX1:
+        case Boxes.BOX1 :
             newBox = req.isTrue ? Boxes.BOX2 : Boxes.BOX1
             break
-        case Boxes.BOX2:
+        case Boxes.BOX2 :
             newBox = req.isTrue ? Boxes.BOX3 : Boxes.BOX1
             break
         case Boxes.BOX3:
