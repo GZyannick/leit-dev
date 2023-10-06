@@ -16,6 +16,7 @@ model Profile {
   name String
   email String @db.Text
   Lcards Lcard[]
+  MindMaps MindMap[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -46,3 +47,57 @@ model Lcard {
  @@index([profileId])
 
 }
+
+model MindMap {
+  id String @id @default(uuid())
+  name String @default("MindMap")
+
+
+  profileId String
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  nodes Node[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId])
+}
+
+
+
+model Node {
+  id Int @id @default(autoincrement())
+  label String? 
+  value String?
+  stroke String @default("#cbd5e1")
+  color String  @default("#000000")
+  fontSize String @default("2rem")
+  xPos Int @default(0)
+  yPos Int @default(0)
+  type String
+
+  mindMapId String
+  mindMap MindMap @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
+
+  edges Edge[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([mindMapId])
+}
+
+model Edge {
+  id Int @id @default(autoincrement())
+
+  nodeId Int
+  node Node @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([nodeId])
+}
+
+
