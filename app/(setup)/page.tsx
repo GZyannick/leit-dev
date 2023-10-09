@@ -5,9 +5,15 @@ import Link from  'next/link';
 const SetupPage = async() => {
     const profile = await  InitialProfile();
     return (
-        <Link href="/leitner-box">
-            Box
-        </Link>
+        <div>
+            <Link href="/leitner-box">
+                Box
+            </Link>
+            <Link href="/mindmap">
+                MindMap
+            </Link>
+        </div>
+
     );
 }
  
