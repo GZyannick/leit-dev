@@ -1,3 +1,5 @@
+"use client"
+
 const ColorInput = (params: {title: string, color: string, setValue: (value: string) => void}) => {
     // !TODO faire fonctionner les #fff en #ffffff
     return ( 
