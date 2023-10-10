@@ -64,10 +64,8 @@ model MindMap {
   @@index([profileId])
 }
 
-
-
 model Node {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   label String? 
   value String?
   stroke String @default("#cbd5e1")
@@ -91,7 +89,7 @@ model Node {
 model Edge {
   id Int @id @default(autoincrement())
 
-  nodeId Int
+  nodeId String
   node Node @relation(fields: [nodeId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())

@@ -1,7 +1,6 @@
 "use client"
 
 // TODO ajouter la suppresion de la modal aux onDrag
-
 import { useCallback, useEffect, useState } from "react"
 
 type NodeModalType = {

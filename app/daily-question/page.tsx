@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card"
 import  GetQuestions from "@/components/daily/server/get-questions"
-import  DailyQuestions from "@/components/daily/daily-questions"
+// import  DailyQuestions from "@/components/daily/daily-questions"
 const DailyPage = () => {
 
 

@@ -1,7 +1,11 @@
+"use client"
+
+// regler le fait que ne l'on voit pas les nodes si je mets dans selector dbNodes
+// ou le fait que dans le server component j'utilise useStore.setState
+
 import { create } from 'zustand';
 
-import ReactFlow, {
-    Connection,
+import {
     applyEdgeChanges,
     applyNodeChanges,
     Edge,
@@ -10,18 +14,14 @@ import ReactFlow, {
     OnEdgesChange, 
     OnNodesChange,
     addEdge,
-    ReactFlowProvider,
     ReactFlowInstance,
-    ConnectionMode,
     NodeChange,
     EdgeChange,
-    ReactFlowRefType,
-    OnInit,
 } from 'reactflow';
 
 // import { initialNodes, initialEdges, globalStyle } from './initalData';
 import { createWithEqualityFn } from 'zustand/traditional';
-import { MutableRefObject, Ref, useRef } from 'react';
+import { MutableRefObject} from 'react';
 
 type RFState = {
     nodes: Node[],
@@ -35,15 +35,13 @@ type RFState = {
     onConnect: OnConnect;
 }
 
-const useStore = createWithEqualityFn<RFState>((set, get) => ({
+const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     nodes: [],
     edges: [],
     stroke: '#fefae0',
     fontSize: '1rem',
     color: '#023047',
     id: 0,
-
-    // getEdge: ()
 
     onNodesChange: (changes: NodeChange[]) => {
       set({
@@ -131,7 +129,7 @@ const useStore = createWithEqualityFn<RFState>((set, get) => ({
     }
   }));
   
-  export default useStore;
+  export default useMindmapStore;
 
 
 
