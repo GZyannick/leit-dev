@@ -6,17 +6,8 @@ import { redirect } from "next/navigation";
 import { Node, Edge} from 'reactflow';
 
 
-
-
-
-
-// ajouter une coleur pour l'edge tout seul non Stroke qui appartient aux bg
-// ajouter Edge dans La base de donées
-
+// ajouter Edge  deux Node en parent dans La base de donées
 // Ajouter les modification avant de quitter ou dans l'arriere du site sans reload plus
-
-
-
 
 const MindMapPage = async ({params}: {params: {id: string}}) => {
     const profile = InitialProfile()
@@ -44,7 +35,7 @@ const MindMapPage = async ({params}: {params: {id: string}}) => {
                 label: node.label,
                 value: node.value,
                 style: {
-                    stroke: node.stroke,
+                    background: node.background,
                     color: node.color,
                     fontSize: node.fontSize,
                 }

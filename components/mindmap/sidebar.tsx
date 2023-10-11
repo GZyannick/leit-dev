@@ -8,9 +8,12 @@ const selector = (state: any) => ({
     stroke: state.stroke,
     color: state.color,
     fontSize: state.fontSize,
+    background: state.background,
     updateGlobalStrokeStyle: state.updateGlobalStrokeStyle,
     updateGlobalColorStyle: state.updateGlobalColorStyle,
     updateGlobalFontSizeStyle: state.updateGlobalFontSizeStyle,
+    updateGlobalBackgroundStyle: state.updateGlobalBackgroundStyle,
+
 });
 
 
@@ -21,7 +24,7 @@ const Sidebar = () => {
         e.dataTransfer.setData('application/reactflow', nodeType);
         e.dataTransfer.effectAllowed = 'move';
     }
-    const {stroke, color, fontSize, updateGlobalFontSizeStyle, updateGlobalColorStyle, updateGlobalStrokeStyle}= useStore(selector, shallow);
+    const {stroke, color, background, fontSize, updateGlobalBackgroundStyle, updateGlobalFontSizeStyle, updateGlobalColorStyle, updateGlobalStrokeStyle}= useStore(selector, shallow);
     
 
     return (
@@ -33,14 +36,14 @@ const Sidebar = () => {
             <div id="lt-nodes">
                 <ul className="flex items-center">
                     <li className="px-2 text-sm mr-4 border  rounded transition ease-in hover:scale-105"
-                        style={{background: stroke, color: color}}
+                        style={{background: background, color: color}}
                         onDragStart={(e) => onDragStart(e, 'background')}
                         draggable >
                         node
                     </li>
                     
                     <li className="px-2 text-center mb-2 text-sm border-b-2 border-red-500 transition ease-in hover:scale-105"
-                        style={{borderColor: stroke, color: color}}
+                        style={{borderColor: background, color: color}}
                         onDragStart={(e) => onDragStart(e, 'mindMap')}
                         draggable >
                         node
@@ -55,8 +58,13 @@ const Sidebar = () => {
                     <ColorInput title="Text" setValue={updateGlobalColorStyle} color={color}/>
                 </div>
                 <div>
+                    {/* input bg color */}
+                    <ColorInput title="bg" setValue={updateGlobalBackgroundStyle} color={background}/>
+                </div>
+
+                <div>
                     {/* input stroke color */}
-                    <ColorInput title="Color" setValue={updateGlobalStrokeStyle} color={stroke}/>
+                    <ColorInput title="stroke" setValue={updateGlobalStrokeStyle} color={stroke}/>
                 </div>
 
                 <div>

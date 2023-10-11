@@ -27,6 +27,7 @@ type RFState = {
     nodes: Node[],
     edges: Edge[],
     stroke: string,
+    background: string,
     color: string,
     fontSize: string,
     id: number,
@@ -38,9 +39,10 @@ type RFState = {
 const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     nodes: [],
     edges: [],
-    stroke: '#fefae0',
+    stroke: '#000000',
     fontSize: '1rem',
     color: '#023047',
+    background: '#4C5760',
     id: 0,
 
     onNodesChange: (changes: NodeChange[]) => {
@@ -64,7 +66,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
       });
     },
 
-    updateSpecificNodeStyle: (nodeId:string, style: {color: string, fontSize: string, stroke: string}) => {
+    updateSpecificNodeStyle: (nodeId:string, style: {color: string, fontSize: string, background: string}) => {
         set({
             nodes: get().nodes.map((node) => {
                 if(node.id === nodeId) node.data = {...node.data, style}
@@ -88,6 +90,12 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     updateGlobalStrokeStyle: (color: string) => {
         set({
             stroke: color
+        })
+    },
+
+    updateGlobalBackgroundStyle: (color: string) => {
+        set({
+            background: color
         })
     },
     
@@ -115,7 +123,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
                 label: `${type} node ${get().id}`,
                 style: {
                     color: get().color,
-                    stroke: get().stroke,
+                    background: get().background,
                     fontSize: get().fontSize
                 },
             }

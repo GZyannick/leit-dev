@@ -24,7 +24,6 @@ import Sidebar from '@/components/mindmap/sidebar';
 const selector = (state: any) => ({
     nodes: state.nodes,
     edges: state.edges,
-    stroke: state.stroke,
     onNodesChange: state.onNodesChange,
     onEdgesChange: state.onEdgesChange,
     onConnect: state.onConnect,
@@ -37,9 +36,6 @@ const Mindmap = () => {
     const reactFlowWrapper = useRef() as MutableRefObject<HTMLDivElement>;
     const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance>();
     
-    const [stroke, setStroke] = useState(globalStyle.stroke)
-    const [color, setColor] = useState(globalStyle.color)
-    const [fontSize, setFontSize] = useState(globalStyle.fontSize)
     //NodeModalState
     const [isOpen, setIsOpen] = useState(false);
     const [position, setPosition] = useState({x: 0, y:0, height: 0, width: 0})
