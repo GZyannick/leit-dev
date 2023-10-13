@@ -68,7 +68,7 @@ model Node {
   id String @id @default(uuid())
   label String? 
   value String?
-  stroke String @default("#cbd5e1")
+  background String @default("#cbd5e1")
   color String  @default("#000000")
   fontSize String @default("2rem")
   xPos Int @default(0)
@@ -89,6 +89,7 @@ model Node {
 model Edge {
   id Int @id @default(autoincrement())
 
+  color String @default("#000000")
   nodeId String
   node Node @relation(fields: [nodeId], references: [id], onDelete: Cascade)
 

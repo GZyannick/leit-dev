@@ -20,11 +20,14 @@ import { fitViewOptions, defaultEdgeOptions, nodeTypes, proOptions, globalStyle 
 import 'reactflow/dist/style.css';
 import NodeModal from '@/components/mindmap/modals/nodeModal';
 import Sidebar from '@/components/mindmap/sidebar';
+import useKeyboardShortcut from '@/lib/hooks/useKeyboardShortcut';
+import { SaveMindmap } from "@/app/mindmap/[id]/actions";
+
 
 const selector = (state: any) => ({
     nodes: state.nodes,
     edges: state.edges,
-    stroke: state.stroke,
+    mindMapId: state.mindMapId,
     onNodesChange: state.onNodesChange,
     onEdgesChange: state.onEdgesChange,
     onConnect: state.onConnect,
@@ -33,18 +36,18 @@ const selector = (state: any) => ({
 
 const Mindmap = () => {
 
-    const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop} = useMindmapStore(selector, shallow);
+    const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, mindMapId} = useMindmapStore(selector, shallow);
     const reactFlowWrapper = useRef() as MutableRefObject<HTMLDivElement>;
     const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance>();
     
-    const [stroke, setStroke] = useState(globalStyle.stroke)
-    const [color, setColor] = useState(globalStyle.color)
-    const [fontSize, setFontSize] = useState(globalStyle.fontSize)
     //NodeModalState
     const [isOpen, setIsOpen] = useState(false);
     const [position, setPosition] = useState({x: 0, y:0, height: 0, width: 0})
     const [currentId, setCurrentId] = useState()
 
+
+    // Save on CMD + S 
+    useKeyboardShortcut(() => SaveMindmap({mindmapId: mindMapId, nodes: nodes, edges: edges }))
 
 
     const onDragOver = useCallback((e: any) => {
@@ -75,7 +78,7 @@ const Mindmap = () => {
                       <ReactFlow 
                           nodes={nodes}
                           edges={edges}
-                          onNodesChange={onNodesChange}
+                          onNodesChange={(changes) => onNodesChange(changes)}
                           onEdgesChange={onEdgesChange}
                           fitView
                           connectionMode={ConnectionMode.Loose}

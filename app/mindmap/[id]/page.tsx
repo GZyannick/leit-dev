@@ -6,36 +6,25 @@ import { redirect } from "next/navigation";
 import { Node, Edge} from 'reactflow';
 
 
-
-
-
-
-// ajouter une coleur pour l'edge tout seul non Stroke qui appartient aux bg
-// ajouter Edge dans La base de donées
-
+// ajouter Edge  deux Node en parent dans La base de donées
 // Ajouter les modification avant de quitter ou dans l'arriere du site sans reload plus
 
-
-
-
-const MindMapPage = async ({params}: {params: {id: string}}) => {
-    const profile = InitialProfile()
-    if(!profile) redirect('/mindmap')
-
-    const currentMndMap = await db.mindMap.findUnique({
+const getMindMap = async (id: string, profileId: string) => {
+    const res = await db.mindMap.findUnique({
         where: {
-            profileId: profile.id,
-            id: params.id
+            profileId,
+            id,
         },
 
         include: {
             nodes: true,
         }
     })
+    return res
+}
 
-    const mindMapNodes = currentMndMap ? currentMndMap.nodes : []
-
-    const dbNodes: Node[] = mindMapNodes.map((node: any) => {
+const dataToReactFLow = (nodes: any) => {
+    return nodes.map((node: any) => {
         return {
             id: node.id,
             type: node.type,
@@ -44,7 +33,7 @@ const MindMapPage = async ({params}: {params: {id: string}}) => {
                 label: node.label,
                 value: node.value,
                 style: {
-                    stroke: node.stroke,
+                    background: node.background,
                     color: node.color,
                     fontSize: node.fontSize,
                 }
@@ -52,10 +41,22 @@ const MindMapPage = async ({params}: {params: {id: string}}) => {
             width: 109,
         }
     })
+}
+
+
+
+
+const MindMapPage = async ({params}: {params: {id: string}}) => {
+    const profile = InitialProfile()
+    if(!profile && params.id ) redirect('/mindmap')
+
+    const currentMndMap = await getMindMap(params.id, profile.id);
+    const mindMapNodes = currentMndMap ? currentMndMap.nodes : []
+    const dbNodes: Node[] = dataToReactFLow(mindMapNodes)
 
     return ( 
         <div className='flex'>
-            <StoreInitializer nodes={dbNodes} edges={[]}/>
+            <StoreInitializer nodes={dbNodes} edges={[]} mindMapId={params.id}/>
             <Mindmap/>
         </div>
      );
