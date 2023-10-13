@@ -11,8 +11,6 @@ export async function UpdateQuestion(req: {questionId: string, box: Boxes|string
     const profile: any = currentProfile();
     if(!profile) return;
     
-    console.log("THIS IS ME", req)
-
     let newBox
     switch (req.box) {
         case Boxes.BOX1 :

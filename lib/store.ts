@@ -1,5 +1,4 @@
 "use client"
-
 // regler le fait que ne l'on voit pas les nodes si je mets dans selector dbNodes
 // ou le fait que dans le server component j'utilise useStore.setState
 
@@ -28,17 +27,21 @@ type RFState = {
     edges: Edge[],
     stroke: string,
     background: string,
+    mindMapId: string,
     color: string,
     fontSize: string,
     id: number,
     onNodesChange: OnNodesChange;
     onEdgesChange: OnEdgesChange;
     onConnect: OnConnect;
+    updateContentValue: (params: {value: string, nodeId:string}) => void;
+
 }
 
 const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     nodes: [],
     edges: [],
+    mindMapId: "",
     stroke: '#000000',
     fontSize: '1rem',
     color: '#023047',
@@ -49,12 +52,14 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
       set({
         nodes: applyNodeChanges(changes, get().nodes),
       });
-    }, 
+    },
+
     onEdgesChange: (changes: EdgeChange[]) => {
       set({
         edges: applyEdgeChanges(changes, get().edges),
       });
     },
+
     onConnect: (connection: any) => {
         connection.style = {
             stroke: get().stroke,
@@ -98,11 +103,18 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
             background: color
         })
     },
+
+    updateContentValue: (params: {value: string, nodeId: string}) => {
+        set({
+            nodes: get().nodes.map((node) => {
+                if(node.id === params.nodeId) node.data.value = params.value;
+                return node;
+            })
+        })
+    },
     
     onDrop: (event: any, reactFlowWrapper: MutableRefObject<HTMLDivElement>, reactFlowInstance: ReactFlowInstance) => {
         event.preventDefault();
-        console.log(event, reactFlowWrapper, reactFlowInstance)
-
         const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
 
         let type = event.dataTransfer.getData('application/reactflow');
