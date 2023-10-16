@@ -7,7 +7,6 @@ import { currentProfile } from '@/lib/current-profile';
 import { Node, Edge } from 'reactflow';
 
 type NodeType = {
-    id: string,
     label: string,
     value: string,
     background: string,
@@ -16,11 +15,18 @@ type NodeType = {
     xPos: number,
     yPos: number,
     type: string,
-    mindmapId: string | undefined,
+}
+
+type CreateNodeType = NodeType & {
+    mindMap: any,
+}
+
+type UpdateNodeType = NodeType & {
+    id: string,
 }
 
 
-export const updateNode = async (req: NodeType) => {
+export const updateNode = async (req: UpdateNodeType) => {
     await db.node.update({
         where: {
             id: req.id
@@ -38,21 +44,31 @@ export const updateNode = async (req: NodeType) => {
     })
 }
 
-// export const createNode = async (req: NodeType) => {
-//     await db.node.create({
-//         data: {
-//             label: req.label,
-//             value: req.value,
-//             background: req.background,
-//             color: req.color,
-//             fontSize: req.fontSize,
-//             xPos: req.xPos,
-//             yPos: req.yPos,
-//             type: req.type,
-//             mindMapId: req.mindmapId
-//         }
-//     })
-// }
+export const createNode = async (req: CreateNodeType) => {
+    await db.node.create({
+        data: {
+            label: req.label,
+            value: req.value,
+            background: req.background,
+            color: req.color,
+            fontSize: req.fontSize,
+            xPos: req.xPos,
+            yPos: req.yPos,
+            type: req.type,
+            mindMap: {
+                connect: req.mindMap,
+            }
+        }
+    })
+}
+
+export const deleteNode = async (id: string) => {
+    await db.node.delete({
+        where: {
+            id,
+        }
+    })
+}
 
 
 
@@ -84,7 +100,7 @@ export async function SaveMindmap(req: {mindmapId: string, nodes: Node[], edges:
                     xPos: node.position.x,
                     yPos: node.position.y,
                     type: node.type,
-                    mindMapId: req.mindmapId
+                    mindMap: currentMindmap,
                 }
             )
         } else if(node.id) {
@@ -99,10 +115,8 @@ export async function SaveMindmap(req: {mindmapId: string, nodes: Node[], edges:
                     xPos: node.position.x,
                     yPos: node.position.y,
                     type: node.type,
-                    mindmapId: undefined
                 }
             )
-            console.log(node.data)
         };
     })
 }

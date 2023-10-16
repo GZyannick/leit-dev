@@ -80,9 +80,9 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
         })
     },
 
-    updateGlobalFontSizeStyle: (color: string) => {
+    updateGlobalFontSizeStyle: (fontSize: string) => {
         set({
-            fontSize: color
+            fontSize: fontSize + "px"
         })
     },
 
@@ -126,6 +126,8 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
           x: event.clientX - reactFlowBounds.left,
           y: event.clientY - reactFlowBounds.top,
         });
+
+        console.log("store", get().fontSize)
         
         const newNode = {
             id: `dndnode_${get().id}`,
