@@ -1,7 +1,4 @@
 "use client"
-// regler le fait que ne l'on voit pas les nodes si je mets dans selector dbNodes
-// ou le fait que dans le server component j'utilise useStore.setState
-
 
 import {
     applyEdgeChanges,
@@ -17,10 +14,8 @@ import {
     EdgeChange,
 } from 'reactflow';
 
-// import { initialNodes, initialEdges, globalStyle } from './initalData';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { MutableRefObject} from 'react';
-
 import { createNode, updateNode, deleteNode } from '@/app/mindmap/[id]/actions';
 
 type RFState = {
@@ -177,8 +172,3 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   }));
   
   export default useMindmapStore;
-
-
-
-
-//   creer un meilleur store 

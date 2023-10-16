@@ -16,13 +16,9 @@ import ReactFlow, {
 
 import useMindmapStore from '@/lib/store';
 import { fitViewOptions, defaultEdgeOptions, nodeTypes, proOptions, globalStyle } from '@/lib/mindmapOptions';
-
 import 'reactflow/dist/style.css';
 import NodeModal from '@/components/mindmap/modals/nodeModal';
 import Sidebar from '@/components/mindmap/sidebar';
-import useKeyboardShortcut from '@/lib/hooks/useKeyboardShortcut';
-import { SaveMindmap } from "@/app/mindmap/[id]/actions";
-
 
 const selector = (state: any) => ({
     nodes: state.nodes,
@@ -45,10 +41,6 @@ const Mindmap = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [position, setPosition] = useState({x: 0, y:0, height: 0, width: 0})
     const [currentId, setCurrentId] = useState()
-
-
-    // Save on CMD + S 
-    // useKeyboardShortcut(() => SaveMindmap({mindmapId: mindMapId, nodes: nodes, edges: edges }))
 
 
     const onDragOver = useCallback((e: any) => {
