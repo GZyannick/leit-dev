@@ -32,11 +32,12 @@ const selector = (state: any) => ({
     onEdgesChange: state.onEdgesChange,
     onConnect: state.onConnect,
     onDrop: state.onDrop,
+    onNodeDelete: state.onNodeDelete,
   });
 
 const Mindmap = () => {
 
-    const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, mindMapId} = useMindmapStore(selector, shallow);
+    const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onNodeDelete} = useMindmapStore(selector, shallow);
     const reactFlowWrapper = useRef() as MutableRefObject<HTMLDivElement>;
     const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance>();
     
@@ -47,7 +48,7 @@ const Mindmap = () => {
 
 
     // Save on CMD + S 
-    useKeyboardShortcut(() => SaveMindmap({mindmapId: mindMapId, nodes: nodes, edges: edges }))
+    // useKeyboardShortcut(() => SaveMindmap({mindmapId: mindMapId, nodes: nodes, edges: edges }))
 
 
     const onDragOver = useCallback((e: any) => {
@@ -57,7 +58,6 @@ const Mindmap = () => {
 
     const nodeModalModifier = (e: any) => {
         if(!e.target.classList.contains('dnd-node')) return
-        console.log(e.target.id)
         const pos = e.target?.getBoundingClientRect();
         
         setPosition({
@@ -86,6 +86,7 @@ const Mindmap = () => {
                           onNodeClick={(e) => nodeModalModifier(e)}
                           onInit={setReactFlowInstance}
                           onDrop={(event) => onDrop(event, reactFlowWrapper, reactFlowInstance)}
+                          onNodesDelete={onNodeDelete}
                           onDragOver={onDragOver}
                           proOptions={proOptions}
                           fitViewOptions={fitViewOptions}
