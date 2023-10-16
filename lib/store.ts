@@ -2,7 +2,6 @@
 // regler le fait que ne l'on voit pas les nodes si je mets dans selector dbNodes
 // ou le fait que dans le server component j'utilise useStore.setState
 
-import { create } from 'zustand';
 
 import {
     applyEdgeChanges,
@@ -22,6 +21,8 @@ import {
 import { createWithEqualityFn } from 'zustand/traditional';
 import { MutableRefObject} from 'react';
 
+import { createNode, updateNode, deleteNode } from '@/app/mindmap/[id]/actions';
+
 type RFState = {
     nodes: Node[],
     edges: Edge[],
@@ -35,6 +36,7 @@ type RFState = {
     onEdgesChange: OnEdgesChange;
     onConnect: OnConnect;
     updateContentValue: (params: {value: string, nodeId:string}) => void;
+    onNodeDelete: (event: any) => void
 
 }
 
@@ -74,7 +76,10 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     updateSpecificNodeStyle: (nodeId:string, style: {color: string, fontSize: string, background: string}) => {
         set({
             nodes: get().nodes.map((node) => {
-                if(node.id === nodeId) node.data = {...node.data, style}
+                if(node.id === nodeId){
+                    node.data = {...node.data, style}
+                    updateNode(node)
+                }
                 return node
             })
         })
@@ -107,10 +112,14 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     updateContentValue: (params: {value: string, nodeId: string}) => {
         set({
             nodes: get().nodes.map((node) => {
-                if(node.id === params.nodeId) node.data.value = params.value;
+                if(node.id === params.nodeId) {
+                    node.data.value = params.value
+                    updateNode(node) 
+                };
                 return node;
             })
         })
+
     },
     
     onDrop: (event: any, reactFlowWrapper: MutableRefObject<HTMLDivElement>, reactFlowInstance: ReactFlowInstance) => {
@@ -127,7 +136,6 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
           y: event.clientY - reactFlowBounds.top,
         });
 
-        console.log("store", get().fontSize)
         
         const newNode = {
             id: `dndnode_${get().id}`,
@@ -144,10 +152,27 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
 
         }
 
+        createNode({
+            label: `${type} node ${get().id}`,
+            value: '',
+            background:  get().background,
+            color: get().color,
+            fontSize: get().fontSize,
+            xPos: position.x,
+            yPos: position.y,
+            type,
+            mindMapId: get().mindMapId
+        })
+            // modifier l'id de la node apres create si c'est dndnode
         set({
             id: get().id + 1,
             nodes: [...get().nodes, newNode]
         })
+    },
+
+    onNodeDelete: (event: any) => {
+        if(!event[0].id) return;
+        deleteNode(event[0].id);
     }
   }));
   
