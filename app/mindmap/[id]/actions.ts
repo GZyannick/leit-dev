@@ -56,7 +56,7 @@ export const updateNode = async (req: Node) => {
 }
 
 export const createNode = async (req: CreateNodeType) => {
-    await db.node.create({
+    const res = await db.node.create({
         data: {
             label: req.label,
             value: req.value,
@@ -71,6 +71,7 @@ export const createNode = async (req: CreateNodeType) => {
             }
         }
     })
+    return res.id;
 }
 
 export const deleteNode = async (id: string) => {

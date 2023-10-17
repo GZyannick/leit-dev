@@ -117,7 +117,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
 
     },
     
-    onDrop: (event: any, reactFlowWrapper: MutableRefObject<HTMLDivElement>, reactFlowInstance: ReactFlowInstance) => {
+    onDrop: async (event: any, reactFlowWrapper: MutableRefObject<HTMLDivElement>, reactFlowInstance: ReactFlowInstance) => {
         event.preventDefault();
         const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
 
@@ -132,8 +132,20 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
         });
 
         
+        const id = await createNode({
+            label: `${type} node ${get().id}`,
+            value: '',
+            background:  get().background,
+            color: get().color,
+            fontSize: get().fontSize,
+            xPos: position.x,
+            yPos: position.y,
+            type,
+            mindMapId: get().mindMapId
+        })
+
         const newNode = {
-            id: `dndnode_${get().id}`,
+            id: id,
             type,
             position, 
             data: {
@@ -146,18 +158,6 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
             }
 
         }
-
-        createNode({
-            label: `${type} node ${get().id}`,
-            value: '',
-            background:  get().background,
-            color: get().color,
-            fontSize: get().fontSize,
-            xPos: position.x,
-            yPos: position.y,
-            type,
-            mindMapId: get().mindMapId
-        })
             // modifier l'id de la node apres create si c'est dndnode
         set({
             id: get().id + 1,
