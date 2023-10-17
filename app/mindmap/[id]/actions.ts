@@ -21,20 +21,20 @@ type CreateNodeType = NodeType & {
     mindMapId: string,
 }
 
-type UpdateNodeType = NodeType & {
-    id: string,
-}
+// type UpdateNodeType = NodeType & {
+//     id: string,
+// }
 
 
-const GetMindMap = async (mindmapId: string) => {
-    const profile: any = currentProfile(); 
-    if(!profile) return;
-    const currentMindmap = await db.mindMap.findUnique({
-        where: { id: mindmapId, profileId: profile.id }
-    });
+// const GetMindMap = async (mindmapId: string) => {
+//     const profile: any = currentProfile(); 
+//     if(!profile) return;
+//     const currentMindmap = await db.mindMap.findUnique({
+//         where: { id: mindmapId, profileId: profile.id }
+//     });
 
-    return currentMindmap;
-}
+//     return currentMindmap;
+// }
 
 
 export const updateNode = async (req: Node) => {
@@ -75,7 +75,7 @@ export const createNode = async (req: CreateNodeType) => {
 }
 
 export const deleteNode = async (id: string) => {
-    const aa = await db.node.delete({
+    await db.node.delete({
         where: {
             id: id,
         }
