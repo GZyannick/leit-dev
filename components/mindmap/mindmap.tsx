@@ -84,6 +84,7 @@ const Mindmap = () => {
                           fitViewOptions={fitViewOptions}
                           defaultEdgeOptions={defaultEdgeOptions}
                           nodeTypes={nodeTypes}
+                          className='dark:bg-[#09090b] light:bg-white'
                       >
                           <Background/>
                           <Controls/>

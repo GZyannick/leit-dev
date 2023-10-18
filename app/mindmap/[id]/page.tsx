@@ -5,10 +5,6 @@ import { InitialProfile } from '@/lib/initial-profile';
 import { redirect } from "next/navigation";
 import { Node, Edge} from 'reactflow';
 
-
-// ajouter Edge  deux Node en parent dans La base de donées
-// Ajouter les modification avant de quitter ou dans l'arriere du site sans reload plus
-
 const getMindMap = async (id: string, profileId: string) => {
     const res = await db.mindMap.findUnique({
         where: {
@@ -42,9 +38,6 @@ const dataToReactFLow = (nodes: any) => {
         }
     })
 }
-
-
-
 
 const MindMapPage = async ({params}: {params: {id: string}}) => {
     const profile = InitialProfile()
