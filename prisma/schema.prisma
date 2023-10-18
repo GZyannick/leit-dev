@@ -57,6 +57,7 @@ model MindMap {
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   nodes Node[]
+  edges Edge[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -78,7 +79,7 @@ model Node {
   mindMapId String
   mindMap MindMap @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
 
-  edges Edge[]
+  edges EdgeToNode[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -86,17 +87,36 @@ model Node {
   @@index([mindMapId])
 }
 
-model Edge {
+
+
+// to references the edge Start and End
+model EdgeToNode {
   id Int @id @default(autoincrement())
 
-  color String @default("#000000")
-  nodeId String
+  edgeId Int
+  edge Edge @relation(fields: [edgeId], references: [id], onDelete: Cascade)
+
+  nodeId String 
   node Node @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  handle String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([nodeId])
+  @@index([edgeId, nodeId])
 }
 
+model Edge {
+  id Int @id @default(autoincrement())
+  color String @default("#000000")
+  nodes EdgeToNode[]
 
+  mindMapId String
+  mindMap MindMap @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([mindMapId])
+
+}

@@ -1,5 +1,7 @@
 "use client"
 
+// enregistrer le changement de position des nodes
+
 import {
     applyEdgeChanges,
     applyNodeChanges,
@@ -16,7 +18,7 @@ import {
 
 import { createWithEqualityFn } from 'zustand/traditional';
 import { MutableRefObject} from 'react';
-import { createNode, updateNode, deleteNode } from '@/app/mindmap/[id]/actions';
+import { createNode, updateNode, deleteNode, createEdge, deleteEdge, updateNodePosition } from '@/app/mindmap/[id]/actions';
 
 type RFState = {
     nodes: Node[],
@@ -27,12 +29,13 @@ type RFState = {
     color: string,
     fontSize: string,
     id: number,
+    positionBuffer: {x: number, y: number},
     onNodesChange: OnNodesChange;
     onEdgesChange: OnEdgesChange;
     onConnect: OnConnect;
     updateContentValue: (params: {value: string, nodeId:string}) => void;
-    onNodeDelete: (event: any) => void
-
+    onNodeDelete: (event: any) => void;
+    onEdgeDelete: (event: any) => void
 }
 
 const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
@@ -44,8 +47,17 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     color: '#023047',
     background: '#4C5760',
     id: 0,
+    positionBuffer: {x: 0, y:0},
 
     onNodesChange: (changes: NodeChange[]) => {
+        if(changes[0].dragging === true) {
+            set({
+                positionBuffer: changes[0].position
+            })
+        } else if (changes[0].dragging === false) {
+            updateNodePosition(changes[0].id, get().positionBuffer)
+        };
+
       set({
         nodes: applyNodeChanges(changes, get().nodes),
       });
@@ -57,11 +69,22 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
       });
     },
 
-    onConnect: (connection: any) => {
+    onConnect: async (connection: any) => {
         connection.style = {
             stroke: get().stroke,
             strokeWidth: 2
         }
+        
+        const id = await createEdge({
+            source: connection.source,
+            sourceHandle: connection.sourceHandle,
+            target: connection.target,
+            targetHandle: connection.targetHandle,
+            color: get().stroke,
+            mindMapId: get().mindMapId
+        })
+        connection.id = id
+        // donner l'id avait await tu connais
         connection.animated = false
       set({
         edges: addEdge(connection, get().edges),
@@ -168,7 +191,12 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     onNodeDelete: (event: any) => {
         if(!event[0].id) return;
         deleteNode(event[0].id);
-    }
+    },
+
+    onEdgeDelete: (event: any) => {
+        if(!event[0].id) return;
+        deleteEdge(event[0].id)
+    },
   }));
   
   export default useMindmapStore;
