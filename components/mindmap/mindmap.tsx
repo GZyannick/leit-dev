@@ -29,11 +29,12 @@ const selector = (state: any) => ({
     onConnect: state.onConnect,
     onDrop: state.onDrop,
     onNodeDelete: state.onNodeDelete,
+    onEdgeDelete: state.onEdgeDelete,
   });
 
 const Mindmap = () => {
 
-    const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onNodeDelete} = useMindmapStore(selector, shallow);
+    const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onDrop, onNodeDelete, onEdgeDelete} = useMindmapStore(selector, shallow);
     const reactFlowWrapper = useRef() as MutableRefObject<HTMLDivElement>;
     const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance>();
     
@@ -79,6 +80,7 @@ const Mindmap = () => {
                           onInit={setReactFlowInstance}
                           onDrop={(event) => onDrop(event, reactFlowWrapper, reactFlowInstance)}
                           onNodesDelete={onNodeDelete}
+                          onEdgesDelete={onEdgeDelete}
                           onDragOver={onDragOver}
                           proOptions={proOptions}
                           fitViewOptions={fitViewOptions}
