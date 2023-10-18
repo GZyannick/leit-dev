@@ -7,23 +7,6 @@ import { Node, Edge} from 'reactflow';
 import { getEdge, newGetMindMap } from "./actions";
 
 
-// Ajouter les modification avant de quitter ou dans l'arriere du site sans reload plus
-
-// const dataToReactFLow = (nodes: any) => {
-//     const reactflowNode = []
-//     const reactflowEdge = []
-//     return nodes.map((node: any) => {
-
-
-//     return [reactflowNode, reactflowEdge];
-// }
-
-
-
-
-
-
-
 // transform database nodes and edges to two different object for reactflow
 const dataToReactflowNode = (nodes: any) => {
     return nodes.map((node: any) => {
@@ -46,10 +29,6 @@ const dataToReactflowNode = (nodes: any) => {
 }
 
 
-// export const initialEdges: Edge[] = [
-//     {id: '1-2', source: '1', target: '2', label:' to ', animated: false, type: 'label', style: globalStyle},
-//     {id: '3-2', source: '2', sourceHandle: "a", animated: false, target: '3', style: globalStyle}
-// ];
 
 const dataToReactflowEdge = (edges: any) => {
     return edges.map((edge: any) => {
