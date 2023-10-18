@@ -46,7 +46,6 @@ export async function UpdateQuestion(req: {questionId: string, box: Boxes|string
                 box: newBox
             }
         })
-        console.log(lcard)
     } catch (error) {
         console.log("ERROR:", error)
     }

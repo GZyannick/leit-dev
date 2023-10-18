@@ -5,6 +5,8 @@
 import { db } from '@/lib/db';
 import { currentProfile } from '@/lib/current-profile';
 import { Node, Edge } from 'reactflow';
+import { create } from 'domain';
+import { connect } from 'http2';
 
 type NodeType = {
     label: string,
@@ -21,21 +23,42 @@ type CreateNodeType = NodeType & {
     mindMapId: string,
 }
 
-// type UpdateNodeType = NodeType & {
-//     id: string,
-// }
+type CreateEdgeType = {
+    source: string,
+    sourceHandle: string,
+    target: string,
+    targetHandle: string,
+    color: string,
+    mindMapId: string,
+}
 
 
-// const GetMindMap = async (mindmapId: string) => {
-//     const profile: any = currentProfile(); 
-//     if(!profile) return;
-//     const currentMindmap = await db.mindMap.findUnique({
-//         where: { id: mindmapId, profileId: profile.id }
-//     });
+export const newGetMindMap = async (id: string, profileId: string) => {
+    const res = await db.mindMap.findUnique({
+        where: {
+            id,
+            profileId,
+        },
 
-//     return currentMindmap;
-// }
+        include: {
+            nodes: true
+        }
+    })
 
+    return res;
+}
+
+export const updateNodePosition = async (id: string, position: {x: number, y: number}) => {
+    await db.node.update({
+        where: {
+            id,
+        },
+        data: {
+            xPos: position.x,
+            yPos: position.y
+        }
+    })
+}
 
 export const updateNode = async (req: Node) => {
     await db.node.update({
@@ -53,6 +76,7 @@ export const updateNode = async (req: Node) => {
             type: req.type,
         }
     })
+
 }
 
 export const createNode = async (req: CreateNodeType) => {
@@ -78,6 +102,45 @@ export const deleteNode = async (id: string) => {
     await db.node.delete({
         where: {
             id: id,
+        }
+    })
+}
+
+
+export const getEdge = async (mindMapId: string) => {
+    const res = await db.edge.findMany({
+        where: { mindMapId },
+        include: { nodes: true }
+    })
+    return res
+}
+
+export const createEdge = async (req: CreateEdgeType) => {
+    const res = await db.edge.create({
+        data: {
+            color: req.color,
+            mindMap: {connect: {id: req.mindMapId}},
+            nodes: {
+                create: [
+                    { 
+                        node: {connect: {id: req.source}},
+                        handle: req.sourceHandle,
+                    },
+                    { 
+                        node: {connect: {id: req.target}},
+                        handle: req.targetHandle
+                    },
+                ],
+            },
+        },
+    })
+    return res.id
+}
+
+export const deleteEdge = async (id: number) => {
+    await db.edge.delete({
+        where: {
+            id: id
         }
     })
 }
