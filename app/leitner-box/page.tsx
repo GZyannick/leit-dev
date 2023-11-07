@@ -13,11 +13,9 @@ const LeitnerPage = () => {
 
     const boxes = Object.keys(Boxes);
     return (
-        <div className="container pt-8"> 
-            <h3 className="text-2xl">Leitner Box</h3>
-           
-
-            <div className="grid gap-8 grid-cols-5">
+        <div className="container pt-8">
+            <h3 className="text-2xl py-4">Leitner Box</h3>
+            <div className="grid gap-2 md:grid-cols-5 grid-cols-3">
                 {
                     boxes.map((box) => (
                         <Card key={box} className="h-64 p-6">
@@ -28,7 +26,7 @@ const LeitnerPage = () => {
                     ))
                 }
             </div>
-            
+
             <div className="mt-8">
                 <Link href={"/daily-question"}>
                     <Button className="mr-4">Daily question</Button>
@@ -38,7 +36,7 @@ const LeitnerPage = () => {
         </div>
     );
 }
- 
+
 export default LeitnerPage;
 
 // <Card className="h-64 p-4">
@@ -64,7 +62,7 @@ export default LeitnerPage;
  *  [.....], 4 days
  *  [..........], 6 days
  *  [.......], 8 days if true wp you learn it
- * ] 
+ * ]
  * if response = true change to next box
  * else if response = false change to previous box
  */
@@ -75,7 +73,7 @@ export default LeitnerPage;
  */
 
 /*
- * creer un onglet appris avec les question/response 
+ * creer un onglet appris avec les question/response
  * pour montrer tout ce que l'on a appris
  */
 
