@@ -18,7 +18,7 @@ import useMindmapStore from '@/lib/store';
 import { fitViewOptions, defaultEdgeOptions, nodeTypes, proOptions, globalStyle } from '@/lib/mindmapOptions';
 import 'reactflow/dist/style.css';
 import NodeModal from '@/components/mindmap/modals/nodeModal';
-import Sidebar from '@/components/mindmap/sidebar';
+import ReactFlowMenu from '@/components/mindmap/reactFlowMenu';
 
 const selector = (state: any) => ({
     nodes: state.nodes,
@@ -66,7 +66,7 @@ const Mindmap = () => {
     return ( 
         <>
             <ReactFlowProvider>
-                <Sidebar/>
+                <ReactFlowMenu/>
                 <div className="reactflow-wrapper w-screen h-screen bg-white" ref={reactFlowWrapper}>
                       <ReactFlow 
                           nodes={nodes}
