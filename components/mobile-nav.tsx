@@ -1,4 +1,13 @@
 // import { Bot } from "lucide-react";
+
+import { Separator } from "./ui/separator";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+} from "@clerk/nextjs";
+import { Button } from "./ui/button";
 import Link from "next/link";
 type NavItem = {
   title: string;
@@ -23,6 +32,17 @@ const MobileNav = ({ items }: MobileMenuProps) => {
               {item?.title}
             </Link>
           ))}
+          <Separator orientation="horizontal" />
+          <SignedIn>
+            <Button>
+              <SignInButton />
+            </Button>
+          </SignedIn>
+          <SignedOut>
+            <Button>
+              <SignInButton />
+            </Button>
+          </SignedOut>
         </nav>
       </div>
     </div>
