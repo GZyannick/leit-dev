@@ -1,20 +1,18 @@
-import  { InitialProfile } from '@/lib/initial-profile';
-import { Button } from '@/components/ui/button';
-import { db } from '@/lib/db';
-import Link from  'next/link';
-const SetupPage = async() => {
-    const profile = await  InitialProfile();
-    return (
-        <div>
-            <Link href="/leitner-box">
-                Box
-            </Link>
-            <Link href="/mindmap">
-                MindMap
-            </Link>
-        </div>
+// import { InitialProfile } from "@/lib/initial-profile";
+// import Mindmaps from "@/components/general/mindmaps";
+// import LeitnerBoxes from "@/components/general/leitner-boxes";
+//
+//
+const SetupPage = async () => {
+  return <h1>Hello World</h1>;
+};
 
-    );
-}
- 
 export default SetupPage;
+
+// <div className="mx-auto flex flex-col justify-center md:w-10/12 md:px-8">
+// <div className="container grid items-start gap-10 md:w-10/12">
+//   <Mindmaps />
+//   <div className="flex">
+//     <LeitnerBoxes />
+//   </div>
+// </div>
