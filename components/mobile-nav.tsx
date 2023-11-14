@@ -40,7 +40,7 @@ const MobileNav = ({ items }: MobileMenuProps) => {
           </SignedIn>
           <SignedOut>
             <Button>
-              <SignInButton />
+              <SignOutButton />
             </Button>
           </SignedOut>
         </nav>
