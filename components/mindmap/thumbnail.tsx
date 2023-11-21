@@ -8,8 +8,8 @@ import {
 import { useTransition } from "react";
 import { sendToCloudinary } from "@/app/mindmap/[id]/actions";
 
-const imageWidth = 1024;
-const imageHeight = 768;
+const imageWidth = 1920;
+const imageHeight = 1080;
 
 const Thumbnail = (props: { refHtml: any; mindMapId: string }) => {
   let [isPending, startTransition] = useTransition();
