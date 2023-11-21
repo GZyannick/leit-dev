@@ -35,12 +35,12 @@ model Lcard {
   id String @id @default(uuid())
 
   question String
-  answer String 
-  box Boxes @default(BOX1) 
+  answer String
+  box Boxes @default(BOX1)
 
   profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -55,7 +55,8 @@ model MindMap {
 
   profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-
+  imageUrl String?
+  imagePublicId String?
   nodes Node[]
   edges Edge[]
 
@@ -67,7 +68,7 @@ model MindMap {
 
 model Node {
   id String @id @default(uuid())
-  label String? 
+  label String?
   value String?
   background String @default("#cbd5e1")
   color String  @default("#000000")
@@ -96,7 +97,7 @@ model EdgeToNode {
   edgeId Int
   edge Edge @relation(fields: [edgeId], references: [id], onDelete: Cascade)
 
-  nodeId String 
+  nodeId String
   node Node @relation(fields: [nodeId], references: [id], onDelete: Cascade)
   handle String
 
