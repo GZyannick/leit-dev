@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { InitialProfile } from "@/lib/initial-profile";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import BtnAndSort from "@/components/general/btn-and-sort";
 const MindMapsPage = async () => {
   const profile: any = InitialProfile();
   if (!profile) redirect("/");
@@ -16,13 +16,7 @@ const MindMapsPage = async () => {
 
   return (
     <div className="mx-auto mt-10 grid gap-6 md:container">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-6 text-[#4E4E4E]">
-          <p>Last updated</p>
-          <p>Name</p>
-        </div>
-        <Button className="px-12">New Mindmap</Button>
-      </div>
+      <BtnAndSort sort={["Last update", "name"]} btn={["New Mindmap"]} />
       <div className="lg-grid-cols-4 mx-auto flex flex-col justify-center gap-10  sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {mindMaps.map((mindMap, key) => (
           <div key={`mindmap-${key}`}>

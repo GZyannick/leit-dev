@@ -1,41 +1,42 @@
-import Link from  'next/link';
-import { Boxes  } from "@prisma/client";
+import Link from "next/link";
+import { Boxes } from "@prisma/client";
 
 //ui
-import { Card } from "@/components/ui/card"
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import BtnAndSort from "@/components/general/btn-and-sort";
 
 // personal method
 import InitialLeitnerForm from "@/components/modals/initial-Leitner-Form";
-import Lcards from '@/components/leitner/lcards';
+import Lcards from "@/components/leitner/lcards";
 
 const LeitnerPage = () => {
+  const boxes = Object.keys(Boxes);
+  return (
+    <div className="mx-auto mt-10 grid gap-6 md:container">
+      <BtnAndSort
+        sort={["Last added", "box"]}
+        btn={["Daily question", "New Card"]}
+      />
+      <div className="grid grid-cols-3 gap-2 md:grid-cols-5">
+        {boxes.map((box) => (
+          <Card key={box} className="h-64 p-6">
+            <ul>
+              <Lcards box={box} />
+            </ul>
+          </Card>
+        ))}
+      </div>
 
-    const boxes = Object.keys(Boxes);
-    return (
-        <div className="container pt-8">
-            <h3 className="text-2xl py-4">Leitner Box</h3>
-            <div className="grid gap-2 md:grid-cols-5 grid-cols-3">
-                {
-                    boxes.map((box) => (
-                        <Card key={box} className="h-64 p-6">
-                            <ul>
-                                <Lcards box={box}/>
-                            </ul>
-                        </Card>
-                    ))
-                }
-            </div>
-
-            <div className="mt-8">
-                <Link href={"/daily-question"}>
-                    <Button className="mr-4">Daily question</Button>
-                </Link>
-                <InitialLeitnerForm/>
-            </div>
-        </div>
-    );
-}
+      <div className="mt-8">
+        <Link href={"/daily-question"}>
+          <Button className="mr-4">Daily question</Button>
+        </Link>
+        <InitialLeitnerForm />
+      </div>
+    </div>
+  );
+};
 
 export default LeitnerPage;
 
@@ -53,7 +54,6 @@ export default LeitnerPage;
  * chaque array constitue une box
  * est on a plusieurs question dans une box
  */
-
 
 /** ex: https://www.motive-toi.com/outils-pratiques/la-methode-leitner-pour-un-apprentissage-efficace-presque-sans-effort/
  * [
@@ -76,7 +76,6 @@ export default LeitnerPage;
  * creer un onglet appris avec les question/response
  * pour montrer tout ce que l'on a appris
  */
-
 
 /**
  * calculer le nb de jours entre chaque question
