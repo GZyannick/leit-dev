@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar";
 const inter = Inter({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
   title: "LeitDev",
   description: "Learning programming with leitner and mindmap method to grow",
