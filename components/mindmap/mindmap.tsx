@@ -17,7 +17,6 @@ import ReactFlow, {
   ReactFlowInstance,
   ConnectionMode,
 } from "reactflow";
-
 import useMindmapStore from "@/lib/store";
 import {
   fitViewOptions,
@@ -55,6 +54,7 @@ const Mindmap = () => {
     onEdgeDelete,
     mindMapId,
   } = useMindmapStore(selector, shallow);
+
   const reactFlowWrapper = useRef() as MutableRefObject<HTMLDivElement>;
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance>();
