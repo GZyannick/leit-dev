@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-const BtnAndSort = ({ sort, btn }: { sort: string[]; btn: string[] }) => {
-  console.log("hi");
-
+const BtnAndSort = ({ sort, children }: { sort: string[]; children: any }) => {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-6 text-sm text-[#4E4E4E]	">
@@ -11,13 +9,7 @@ const BtnAndSort = ({ sort, btn }: { sort: string[]; btn: string[] }) => {
         ))}
       </div>
 
-      <div className="flex items-center gap-6">
-        {btn.map((name, key) => (
-          <Button key={`btn-${key}`} className="px-12">
-            {name}
-          </Button>
-        ))}
-      </div>
+      <div className="flex items-center gap-6">{children}</div>
     </div>
   );
 };
