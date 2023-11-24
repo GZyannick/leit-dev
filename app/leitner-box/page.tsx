@@ -38,7 +38,7 @@ const LeitnerPage = async () => {
       </BtnAndSort>
       <div className=" columns-1 gap-6 px-4 sm:columns-2 sm:px-2 md:columns-4 md:px-0">
         {lcards.map((lcard, key) => (
-          <Lcard key={`lcard-${key}`} lcard={lcard} />
+          <Lcard key={`lcard-n${key}`} lcard={lcard} />
         ))}
       </div>
     </div>
