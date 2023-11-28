@@ -9,10 +9,7 @@ import {
 } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import Link from "next/link";
-type NavItem = {
-  title: string;
-  path: string;
-};
+import { NavItem } from "@/lib/types";
 
 interface MobileMenuProps {
   items: NavItem[];

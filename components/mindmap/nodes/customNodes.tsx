@@ -3,17 +3,7 @@
 import useMindmapStore from "@/lib/store";
 import { useCallback } from "react";
 import { NodeProps, Node, Handle, Position } from "reactflow";
-
-type NodeData = {
-  value: string;
-  isConnectable: any;
-  style: {
-    color: string;
-    background: string;
-    fontSize: string;
-  };
-};
-export type CustomNodeType = Node<NodeData>;
+import { NodeData } from "@/lib/types";
 
 export const MindMapNode = ({
   id,

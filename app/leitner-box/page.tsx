@@ -14,6 +14,10 @@ import BtnAndSort from "@/components/general/btn-and-sort";
 import InitialLeitnerForm from "@/components/modals/initial-Leitner-Form";
 import Lcard from "@/components/leitner/lcard";
 
+const sortByBox = () => {};
+
+const sortByLastAdded = () => {};
+
 const LeitnerPage = async () => {
   const profile = InitialProfile();
   if (!profile) return redirect("/");
