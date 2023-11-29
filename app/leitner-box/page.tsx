@@ -12,6 +12,7 @@ const LeitnerPage = async () => {
 
   const lcards = await db.lcard.findMany({
     where: {
+      //@ts-ignore
       profileId: profile.id,
 
       NOT: {

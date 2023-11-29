@@ -94,3 +94,13 @@ export type BtnAndSortType = {
   }[];
   children: any;
 };
+
+export type MindmapType = {
+  id: string;
+  name: string;
+  profileId: string;
+  imageUrl: string | null;
+  imagePublicId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
