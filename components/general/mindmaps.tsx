@@ -3,6 +3,8 @@ import { InitialProfile } from "@/lib/initial-profile";
 import Image from "next/image";
 import Container from "@/components/general/container";
 
+// This is for the dashboard that why is in general
+
 const Mindmaps = async () => {
   const profile = await InitialProfile();
   const mindmaps = await db.mindMap.findMany({

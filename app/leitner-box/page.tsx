@@ -1,18 +1,10 @@
-import Link from "next/link";
-
 //server
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { InitialProfile } from "@/lib/initial-profile";
 
-//ui
-
-import { Button } from "@/components/ui/button";
-import BtnAndSort from "@/components/general/btn-and-sort";
-
 // personal method
-import InitialLeitnerForm from "@/components/modals/initial-Leitner-Form";
-import Lcard from "@/components/leitner/lcard";
+import LeitnerCards from "@/components/leitner/leitner-cards";
 
 const LeitnerPage = async () => {
   const profile = InitialProfile();
@@ -20,6 +12,7 @@ const LeitnerPage = async () => {
 
   const lcards = await db.lcard.findMany({
     where: {
+      //@ts-ignore
       profileId: profile.id,
 
       NOT: {
@@ -28,21 +21,7 @@ const LeitnerPage = async () => {
     },
   });
 
-  return (
-    <div className="mx-auto mt-10 grid gap-6 md:container">
-      <BtnAndSort sort={["Last added", "box"]}>
-        <Link href={"/daily-question"}>
-          <Button>Daily question</Button>
-        </Link>
-        <InitialLeitnerForm />
-      </BtnAndSort>
-      <div className=" columns-1 gap-6 px-4 sm:columns-2 sm:px-2 md:columns-4 md:px-0">
-        {lcards.map((lcard, key) => (
-          <Lcard key={`lcard-n${key}`} lcard={lcard} />
-        ))}
-      </div>
-    </div>
-  );
+  return <LeitnerCards lcards={lcards} />;
 };
 
 export default LeitnerPage;

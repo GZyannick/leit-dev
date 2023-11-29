@@ -1,7 +1,7 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
 //TODO creer un fichier qui contient tout les types
-
+import { NodeType, CreateNodeType, CreateEdgeType } from "@/lib/types";
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
 import { Node, Edge } from "reactflow";
@@ -16,30 +16,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
-type NodeType = {
-  label: string;
-  value: string;
-  background: string;
-  color: string;
-  fontSize: string;
-  xPos: number;
-  yPos: number;
-  type: string;
-};
-
-type CreateNodeType = NodeType & {
-  mindMapId: string;
-};
-
-type CreateEdgeType = {
-  source: string;
-  sourceHandle: string;
-  target: string;
-  targetHandle: string;
-  color: string;
-  mindMapId: string;
-};
 
 export const newGetMindMap = async (id: string, profileId: string) => {
   const res = await db.mindMap.findUnique({
