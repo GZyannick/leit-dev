@@ -11,17 +11,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import { LcardType } from "@/lib/types";
 import { FilledBox, LinedBox } from "@/components/ui/svg";
-
-type LcardType = {
-  id: String;
-  question: String;
-  answer: String;
-  box: String;
-  profileId: String;
-  createdAt: Date;
-  updatedAt: Date;
-};
 
 const BoxNumberToSvg = (box: String) => {
   const res = parseInt(box.replace(/\D/g, ""));

@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction } from "react";
+import { Edge, Node, OnNodesChange, OnEdgesChange, OnConnect } from "reactflow";
+
 export type NodeType = {
   label: string;
   value: string;
@@ -31,7 +34,6 @@ export type Props = {
   }[];
 };
 
-import { Edge, Node, OnNodesChange, OnEdgesChange, OnConnect } from "reactflow";
 export type RFState = {
   nodes: Node[];
   edges: Edge[];
@@ -66,3 +68,29 @@ export type NodeData = {
 };
 
 export type CustomNodeType = Node<NodeData>;
+
+export type LcardType = {
+  id: String;
+  question: String;
+  answer: String;
+  box: String;
+  profileId: String;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type NodeModalType = {
+  position: { x: number; y: number; height: number; width: number };
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
+  currentId: number | undefined;
+};
+
+export type BtnAndSortType = {
+  sortingMethods: {
+    name: string;
+    state: boolean;
+    setState: Dispatch<SetStateAction<boolean>>;
+  }[];
+  children: any;
+};
