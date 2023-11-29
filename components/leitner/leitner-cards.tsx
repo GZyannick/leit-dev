@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import useSort from "@/lib/hooks/useSort";
 import Link from "next/link";
 
 //types
@@ -17,20 +17,13 @@ import InitialLeitnerForm from "@/components/modals/initial-Leitner-Form";
 import { sortByBox, sortByCreatedAt } from "@/lib/sort";
 
 const LeitnerCards = ({ lcards }: { lcards: LcardType[] }) => {
-  const [isSortByBox, setIsSortByBox] = useState<boolean>(false);
-  const [isSortByCreatedAt, setIsSortByCreatedAt] = useState<boolean>(false);
-  const [sortLcards, setSortLcards] = useState(lcards);
-
-  useEffect(() => {
-    if (isSortByBox === false && isSortByCreatedAt === false) return;
-    const sortedLcards = isSortByBox
-      ? sortByBox(sortLcards)
-      : sortByCreatedAt(sortLcards);
-    setSortLcards(sortedLcards);
-
-    setIsSortByBox(false);
-    setIsSortByCreatedAt(false);
-  }, [isSortByBox, isSortByCreatedAt]);
+  const [
+    isSortByBox,
+    setIsSortByBox,
+    isSortByCreatedAt,
+    setIsSortByCreatedAt,
+    sortLcards,
+  ] = useSort(lcards, sortByBox, sortByCreatedAt);
 
   const sortingMethods = [
     {

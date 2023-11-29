@@ -1,6 +1,6 @@
 "use client";
 import { MindmapType } from "@/lib/types";
-import { useState, useEffect } from "react";
+import useSort from "@/lib/hooks/useSort";
 import Link from "next/link";
 import Image from "next/image";
 import BtnAndSort from "@/components/general/btn-and-sort";
@@ -9,21 +9,13 @@ import { Button } from "@/components/ui/button";
 import { sortByMindmapName, sortByCreatedAt } from "@/lib/sort";
 
 const Mindmaps = ({ mindmaps }: { mindmaps: MindmapType[] }) => {
-  //todo create a hook for this method
-  const [isSortByName, setIsSortByName] = useState<boolean>(false);
-  const [isSortByCreatedAt, setIsSortByCreatedAt] = useState<boolean>(false);
-  const [sortMindmaps, setSortMindmaps] = useState(mindmaps);
-
-  useEffect(() => {
-    if (isSortByName === false && isSortByCreatedAt === false) return;
-    const sortedMindmaps = isSortByName
-      ? sortByMindmapName(sortMindmaps)
-      : sortByCreatedAt(sortMindmaps);
-    setSortMindmaps(sortedMindmaps);
-
-    setIsSortByName(false);
-    setIsSortByCreatedAt(false);
-  }, [isSortByName, isSortByCreatedAt]);
+  const [
+    isSortByName,
+    setIsSortByName,
+    isSortByCreatedAt,
+    setIsSortByCreatedAt,
+    sortMindmaps,
+  ] = useSort(mindmaps, sortByMindmapName, sortByCreatedAt);
 
   const sortingMethods = [
     {
@@ -70,3 +62,18 @@ const Mindmaps = ({ mindmaps }: { mindmaps: MindmapType[] }) => {
 };
 
 export default Mindmaps;
+
+// const [isSortByName, setIsSortByName] = useState<boolean>(false);
+// const [isSortByCreatedAt, setIsSortByCreatedAt] = useState<boolean>(false);
+// const [sortMindmaps, setSortMindmaps] = useState(mindmaps);
+
+// useEffect(() => {
+//   if (isSortByName === false && isSortByCreatedAt === false) return;
+//   const sortedMindmaps = isSortByName
+//     ? sortByMindmapName(sortMindmaps)
+//     : sortByCreatedAt(sortMindmaps);
+//   setSortMindmaps(sortedMindmaps);
+
+//   setIsSortByName(false);
+//   setIsSortByCreatedAt(false);
+// }, [isSortByName, isSortByCreatedAt]);
