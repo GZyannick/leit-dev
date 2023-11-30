@@ -29,13 +29,16 @@ const Mindmaps = ({ mindmaps }: { mindmaps: MindmapType[] }) => {
       setState: setIsSortByName,
     },
   ];
-
   return (
     <div className="mx-auto mt-10 grid gap-6 md:container">
+      {/*
+      // @ts-ignore */}
       <BtnAndSort sortingMethods={sortingMethods}>
         <Button>New Mindmap</Button>
       </BtnAndSort>
       <div className="lg-grid-cols-4 mx-auto flex flex-col justify-center gap-10  sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {/*
+          // @ts-ignore */}
         {sortMindmaps.map((mindMap, key) => {
           const src = mindMap.imageUrl ? mindMap.imageUrl : "";
           return (
