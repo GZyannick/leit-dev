@@ -40,6 +40,8 @@ const LeitnerCards = ({ lcards }: { lcards: LcardType[] }) => {
 
   return (
     <div className="mx-auto mt-10 grid gap-6 md:container">
+      {/*
+    // @ts-ignore */}
       <BtnAndSort sortingMethods={sortingMethods}>
         <Link href={"/daily-question"}>
           <Button>Daily question</Button>
@@ -47,6 +49,8 @@ const LeitnerCards = ({ lcards }: { lcards: LcardType[] }) => {
         <InitialLeitnerForm />
       </BtnAndSort>
       <div className=" columns-1 gap-6 px-4 sm:columns-2 sm:px-2 md:columns-4 md:px-0">
+        {/*
+      // @ts-ignore */}
         {sortLcards?.map((lcard, key) => (
           <Lcard key={`lcard-n${key}`} lcard={lcard} />
         ))}

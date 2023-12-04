@@ -5,8 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import BtnAndSort from "@/components/general/btn-and-sort";
 import { Button } from "@/components/ui/button";
-
+import { createNewMindmap } from "@/app/mindmap/actions";
 import { sortByMindmapName, sortByCreatedAt } from "@/lib/sort";
+
+const defaultImage =
+  "https://res.cloudinary.com/dcujfv4xb/image/upload/v1701698594/DefaultImage.png";
 
 const Mindmaps = ({ mindmaps }: { mindmaps: MindmapType[] }) => {
   const [
@@ -30,11 +33,13 @@ const Mindmaps = ({ mindmaps }: { mindmaps: MindmapType[] }) => {
     },
   ];
   return (
-    <div className="mx-auto mt-10 grid gap-6 md:container">
+    <div className="mx-auto mt-10 grid gap-6  md:container">
       {/*
       // @ts-ignore */}
       <BtnAndSort sortingMethods={sortingMethods}>
-        <Button>New Mindmap</Button>
+        <Button onClick={async () => await createNewMindmap()}>
+          New Mindmap
+        </Button>
       </BtnAndSort>
       <div className="lg-grid-cols-4 mx-auto flex flex-col justify-center gap-10  sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {/*
@@ -45,14 +50,14 @@ const Mindmaps = ({ mindmaps }: { mindmaps: MindmapType[] }) => {
             <div key={`mindmap-${key}`}>
               <Link href={`/mindmap/${mindMap.id}`}>
                 <Image
-                  src={src}
+                  src={src === "" ? defaultImage : src}
                   alt={mindMap.name}
                   width={300}
                   height={171}
                   style={{
                     borderRadius: "0.5rem",
-                    boxShadow: "0px 2px 8px 0px rgba(136, 136, 136, 0.14);",
                   }}
+                  className="rounded-sm shadow-sm"
                 />
                 <p className="mt-2 text-[#4E4E4E]">{mindMap.name}</p>
               </Link>
