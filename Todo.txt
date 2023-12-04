@@ -1,5 +1,5 @@
-//TODO 1 faire le bouton new Mindmap qui creer une Mindmap avec un nom generic que l'utilisateur pour changer
-    dans la mindmap
+//Enlever BUG mindmap show a la creation / modification de la mindmap
+
 
 //TODO faire l'ui de mindmaps#show
 //TODO cacher l'ui avant de prendre la thumbnail

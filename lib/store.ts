@@ -33,6 +33,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   nodes: [],
   edges: [],
   mindMapId: "",
+  mindMapName: "",
   stroke: "#000000",
   fontSize: "1rem",
   color: "#023047",
