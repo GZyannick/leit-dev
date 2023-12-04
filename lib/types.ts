@@ -40,6 +40,7 @@ export type RFState = {
   stroke: string;
   background: string;
   mindMapId: string;
+  mindMapName: string;
   color: string;
   fontSize: string;
   id: number;
