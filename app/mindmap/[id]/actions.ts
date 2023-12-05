@@ -193,5 +193,5 @@ export const deleteMindmap = async (id: string) => {
       profileId: profile.id,
     },
   });
-  redirect("/");
+  redirect("/mindmap");
 };
