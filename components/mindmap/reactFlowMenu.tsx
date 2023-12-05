@@ -14,6 +14,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ArrowBigLeft, Undo2, Redo2 } from "lucide-react";
+import FontSizeInput from "./input/fontSizeInput";
 
 const selector = (state: any) => ({
   mindMapName: state.mindMapName,
@@ -95,11 +96,6 @@ const ReactFlowMenu = () => {
             <p>General</p>
             <div className="mt-2 grid grid-cols-2">
               <ColorInput
-                title="Fill"
-                setValue={updateGlobalColorStyle}
-                color={color}
-              />
-              <ColorInput
                 title="Background"
                 setValue={updateGlobalBackgroundStyle}
                 color={background}
@@ -114,15 +110,16 @@ const ReactFlowMenu = () => {
                 setValue={updateGlobalColorStyle}
                 color={color}
               />
-              <ColorInput
+              {/* <ColorInput
                 title="Font"
                 setValue={updateGlobalColorStyle}
                 color={color}
-              />
-              <ColorInput
+              /> */}
+
+              <FontSizeInput
                 title="Font Size"
-                setValue={updateGlobalColorStyle}
-                color={color}
+                setValue={updateGlobalFontSizeStyle}
+                fontSize={fontSize}
               />
             </div>
             <Separator className="my-4" />
