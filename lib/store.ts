@@ -27,6 +27,7 @@ import {
   createEdge,
   deleteEdge,
   updateNodePosition,
+  updateMindMapName,
 } from "@/app/mindmap/[id]/actions";
 
 const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
@@ -192,6 +193,16 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   onEdgeDelete: (event: any) => {
     if (!event[0].id) return;
     deleteEdge(event[0].id);
+  },
+
+  updateMindmapName: (event: string) => {
+    if (get().mindMapName === event) return;
+
+    set({
+      mindMapName: event,
+    });
+
+    updateMindMapName(get().mindMapId, event);
   },
 }));
 

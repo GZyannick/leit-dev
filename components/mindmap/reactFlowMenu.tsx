@@ -2,22 +2,23 @@
 
 import { Panel } from "reactflow";
 import ColorInput from "@/components/mindmap/input/colorInput";
+import { useState } from "react";
 import { shallow } from "zustand/shallow";
 import useMindmapStore from "@/lib/store";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { ArrowBigLeft, Undo2, Redo2 } from "lucide-react";
+import { ArrowBigLeft, Undo2, Redo2, Pencil, Save } from "lucide-react";
 import FontSizeInput from "./input/fontSizeInput";
+import DeleteDialog from "./modals/deleteDialog";
+import { deleteMindmap } from "@/app/mindmap/[id]/actions";
+const title = "Are you absolutely sure?";
+const desc = `This action cannot be undone. This will permanently delete your
+  mindmap and remove the data from our servers.`;
 
 const selector = (state: any) => ({
   mindMapName: state.mindMapName,
+  mindMapId: state.mindMapId,
   stroke: state.stroke,
   color: state.color,
   fontSize: state.fontSize,
@@ -26,11 +27,14 @@ const selector = (state: any) => ({
   updateGlobalColorStyle: state.updateGlobalColorStyle,
   updateGlobalFontSizeStyle: state.updateGlobalFontSizeStyle,
   updateGlobalBackgroundStyle: state.updateGlobalBackgroundStyle,
+  updateMindmapName: state.updateMindmapName,
 });
 
 const ReactFlowMenu = () => {
+  const [isEdit, setIsEdit] = useState(false);
   const {
     mindMapName,
+    mindMapId,
     stroke,
     color,
     background,
@@ -39,12 +43,23 @@ const ReactFlowMenu = () => {
     updateGlobalFontSizeStyle,
     updateGlobalColorStyle,
     updateGlobalStrokeStyle,
+    updateMindmapName,
   } = useMindmapStore(selector, shallow);
+  const [mindmapTitle, setMindmapTitle] = useState(mindMapName);
 
   // on drag object transfer to reactflow to add it in the canvas
   const onDragStart = (e: any, nodeType: any) => {
     e.dataTransfer.setData("application/reactflow", nodeType);
     e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleIsEdit = () => {
+    if (isEdit) updateMindmapName(mindmapTitle);
+    setIsEdit(!isEdit);
+  };
+
+  const handleDelete = () => {
+    deleteMindmap(mindMapId);
   };
 
   return (
@@ -66,7 +81,51 @@ const ReactFlowMenu = () => {
 
         <Card className="mt-6 w-72 text-[#4E4E4E]">
           <CardHeader>
-            <CardTitle className="text-lg ">{mindMapName}</CardTitle>
+            <CardTitle className="flex items-center justify-between text-lg">
+              {isEdit ? (
+                <>
+                  <input
+                    type="text"
+                    defaultValue={mindMapName}
+                    id="mindMapName"
+                    className="w-4/6"
+                    onChange={(e) => {
+                      setMindmapTitle(e.target.value);
+                    }}
+                  ></input>
+                  <div>
+                    <button
+                      className="mr-4 transition-all duration-100 ease-in hover:text-blue-500"
+                      onClick={handleIsEdit}
+                    >
+                      <Save size={16} />
+                    </button>
+                    <DeleteDialog
+                      title={title}
+                      desc={desc}
+                      handleDelete={handleDelete}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="w-4/6 text-ellipsis	">{mindMapName}</p>
+                  <div>
+                    <button
+                      className="mr-4 transition-all duration-100 ease-in hover:text-blue-500"
+                      onClick={handleIsEdit}
+                    >
+                      <Pencil size={16} />
+                    </button>
+                    <DeleteDialog
+                      title={title}
+                      desc={desc}
+                      handleDelete={handleDelete}
+                    />
+                  </div>
+                </>
+              )}
+            </CardTitle>
             <Separator />
           </CardHeader>
           <CardContent>
@@ -110,11 +169,6 @@ const ReactFlowMenu = () => {
                 setValue={updateGlobalColorStyle}
                 color={color}
               />
-              {/* <ColorInput
-                title="Font"
-                setValue={updateGlobalColorStyle}
-                color={color}
-              /> */}
 
               <FontSizeInput
                 title="Font Size"

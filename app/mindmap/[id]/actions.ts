@@ -10,6 +10,7 @@ import { connect } from "http2";
 import { v2 as cloudinary } from "cloudinary";
 import { MutableRefObject } from "react";
 import { Akaya_Telivigala } from "next/font/google";
+import { redirect } from "next/navigation";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -170,4 +171,27 @@ export const sendToCloudinary = async (dataUrl: string, mindMapId: string) => {
       });
     });
   return undefined;
+};
+
+export const updateMindMapName = async (mindMapId: string, name: string) => {
+  await db.mindMap.update({
+    where: {
+      id: mindMapId,
+    },
+    data: {
+      name: name,
+    },
+  });
+};
+
+export const deleteMindmap = async (id: string) => {
+  const profile = await currentProfile();
+  if (!profile) return;
+  await db.mindMap.delete({
+    where: {
+      id: id,
+      profileId: profile.id,
+    },
+  });
+  redirect("/");
 };

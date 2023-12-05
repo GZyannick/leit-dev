@@ -49,6 +49,7 @@ export type RFState = {
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   updateContentValue: (params: { value: string; nodeId: string }) => void;
+  updateMindmapName: (event: string) => void;
   onNodeDelete: (event: any) => void;
   onEdgeDelete: (event: any) => void;
 };
