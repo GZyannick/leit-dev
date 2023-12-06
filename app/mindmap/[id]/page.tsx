@@ -55,7 +55,7 @@ const MindMapPage = async ({ params }: { params: { id: string } }) => {
   const reactflowEdge: any = dataToReactflowEdge(await getEdge(params.id));
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full flex-1">
       <StoreInitializer
         nodes={reactflowNode}
         edges={reactflowEdge}
