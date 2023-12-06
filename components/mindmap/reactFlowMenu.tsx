@@ -49,6 +49,7 @@ const ReactFlowMenu = () => {
 
   // on drag object transfer to reactflow to add it in the canvas
   const onDragStart = (e: any, nodeType: any) => {
+    console.log("drag start")
     e.dataTransfer.setData("application/reactflow", nodeType);
     e.dataTransfer.effectAllowed = "move";
   };
