@@ -32,10 +32,10 @@ const dataToReactflowEdge = (edges: any) => {
   return edges.map((edge: any) => {
     return {
       id: edge.id,
-      source: edge.nodes[0].nodeId,
-      sourceHandle: edge.nodes[0].handle,
-      target: edge.nodes[1].nodeId,
-      targetHandle: edge.nodes[1].handle,
+      source: edge.nodes[0]?.nodeId,
+      sourceHandle: edge.nodes[0]?.handle,
+      target: edge.nodes[1]?.nodeId,
+      targetHandle: edge.nodes[1]?.handle,
       animated: false,
       style: {
         stroke: edge.color,
@@ -52,10 +52,10 @@ const MindMapPage = async ({ params }: { params: { id: string } }) => {
   const currentMindMap = await newGetMindMap(params.id, profile.id);
   const mindMapNodes = currentMindMap ? currentMindMap.nodes : [];
   const reactflowNode: Node[] = dataToReactflowNode(mindMapNodes);
-  const reactflowEdge: any = dataToReactflowEdge(await getEdge(params.id));
+  const reactflowEdge: Edge[] = dataToReactflowEdge(await getEdge(params.id));
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full flex-1">
       <StoreInitializer
         nodes={reactflowNode}
         edges={reactflowEdge}

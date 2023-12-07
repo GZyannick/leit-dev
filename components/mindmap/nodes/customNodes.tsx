@@ -31,6 +31,7 @@ export const MindMapNode = ({
         className="nodrag px-2 empty:before:text-zinc-400  empty:before:content-[attr(data-placeholder)] hover:cursor-pointer "
         data-placeholder="text"
         onBlur={onBlur}
+        suppressContentEditableWarning={true}
       >
         {data.value}
       </div>
@@ -59,8 +60,9 @@ export const BackgroundNode = ({
 }: NodeProps<NodeData>) => {
   const { updateContentValue, nodes } = useMindmapStore();
   const onBlur = useCallback((evt: any) => {
-    // permet de modifier le text ewt l'enregistrer dans zustand
-    updateContentValue({ value: evt.currentTarget.textContent, nodeId: id });
+    console.log(evt.target.value)
+    // permet de modifier le text evt l'enregistrer dans zustand
+    // updateContentValue({ value: evt.currentTarget.textContent, nodeId: id });
   }, []);
 
   return (
@@ -78,9 +80,11 @@ export const BackgroundNode = ({
         className="nodrag px-2 empty:before:text-zinc-400  empty:before:content-[attr(data-placeholder)] hover:cursor-pointer"
         data-placeholder="text"
         onBlur={onBlur}
+        suppressContentEditableWarning={true}
       >
         {data.value}
       </div>
+
       <Handle
         type="source"
         position={Position.Left}

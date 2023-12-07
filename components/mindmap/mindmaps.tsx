@@ -33,7 +33,7 @@ const Mindmaps = ({ mindmaps }: { mindmaps: MindmapType[] }) => {
     },
   ];
   return (
-    <div className="mx-auto mt-10 grid gap-6  md:container">
+    <div className="mx-auto mt-10 grid gap-6 md:container">
       {/*
       // @ts-ignore */}
       <BtnAndSort sortingMethods={sortingMethods}>

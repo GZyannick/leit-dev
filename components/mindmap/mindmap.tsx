@@ -86,10 +86,10 @@ const Mindmap = () => {
 
   return (
     <>
-      <ReactFlowProvider>
+      <ReactFlowProvider >
         <ReactFlowMenu />
         <div
-          className="reactflow-wrapper h-full w-screen bg-white"
+          className="reactflow-wrapper flex-1 w-screen bg-white"
           ref={reactFlowWrapper}
         >
           <ReactFlow
