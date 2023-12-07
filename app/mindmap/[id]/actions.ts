@@ -4,13 +4,13 @@ import { currentUser } from "@clerk/nextjs/server";
 import { NodeType, CreateNodeType, CreateEdgeType } from "@/lib/types";
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
+
 import { Node, Edge } from "reactflow";
-import { create } from "domain";
-import { connect } from "http2";
 import { v2 as cloudinary } from "cloudinary";
-import { MutableRefObject } from "react";
+import { cache } from "react";
 import { Akaya_Telivigala } from "next/font/google";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -24,12 +24,10 @@ export const newGetMindMap = async (id: string, profileId: string) => {
       id,
       profileId,
     },
-
     include: {
       nodes: true,
     },
   });
-
   return res;
 };
 
@@ -64,6 +62,7 @@ export const updateNode = async (req: Node) => {
       type: req.type,
     },
   });
+  revalidatePath("/mindmap/[id]");
 };
 
 export const createNode = async (req: CreateNodeType) => {
@@ -82,6 +81,7 @@ export const createNode = async (req: CreateNodeType) => {
       },
     },
   });
+  revalidatePath("/mindmap/[id]");
   return res.id;
 };
 
@@ -91,6 +91,7 @@ export const deleteNode = async (id: string) => {
       id: id,
     },
   });
+  revalidatePath("/mindmap/[id]");
 };
 
 export const getEdge = async (mindMapId: string) => {
@@ -120,6 +121,7 @@ export const createEdge = async (req: CreateEdgeType) => {
       },
     },
   });
+  revalidatePath("/mindmap/[id]");
   return res.id;
 };
 
@@ -129,6 +131,7 @@ export const deleteEdge = async (id: number) => {
       id: id,
     },
   });
+  revalidatePath("/mindmap/[id]");
 };
 
 export const sendToCloudinary = async (dataUrl: string, mindMapId: string) => {
@@ -157,7 +160,6 @@ export const sendToCloudinary = async (dataUrl: string, mindMapId: string) => {
       mindmap.imagePublicId ? { public_id: mindmap.imagePublicId } : {},
     )
     .then(async (res) => {
-      console.log(res);
       if (mindmap.imagePublicId) return;
       await db.mindMap.update({
         where: {

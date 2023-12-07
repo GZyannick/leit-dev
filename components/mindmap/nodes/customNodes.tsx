@@ -60,9 +60,8 @@ export const BackgroundNode = ({
 }: NodeProps<NodeData>) => {
   const { updateContentValue, nodes } = useMindmapStore();
   const onBlur = useCallback((evt: any) => {
-    console.log(evt.target.value)
     // permet de modifier le text evt l'enregistrer dans zustand
-    // updateContentValue({ value: evt.currentTarget.textContent, nodeId: id });
+    updateContentValue({ value: evt.currentTarget.textContent, nodeId: id });
   }, []);
 
   return (

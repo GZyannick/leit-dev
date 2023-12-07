@@ -1,5 +1,4 @@
 "use client";
-
 import {
   useState,
   useCallback,
@@ -16,6 +15,7 @@ import ReactFlow, {
   ReactFlowProvider,
   ReactFlowInstance,
   ConnectionMode,
+  NodeChange,
 } from "reactflow";
 import useMindmapStore from "@/lib/store";
 import {
@@ -29,6 +29,7 @@ import "reactflow/dist/style.css";
 import NodeModal from "@/components/mindmap/modals/nodeModal";
 import ReactFlowMenu from "@/components/mindmap/reactFlowMenu";
 import Thumbnail from "@/components/mindmap/thumbnail";
+import { useRouter } from "next/navigation";
 const selector = (state: any) => ({
   nodes: state.nodes,
   edges: state.edges,
@@ -55,6 +56,7 @@ const Mindmap = () => {
     mindMapId,
   } = useMindmapStore(selector, shallow);
 
+  const router = useRouter();
   const reactFlowWrapper = useRef() as MutableRefObject<HTMLDivElement>;
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance>();
@@ -84,18 +86,23 @@ const Mindmap = () => {
     setCurrentId(e.target.id);
   };
 
+  const handleOnNodeChange = (changes: NodeChange[]) => {
+    onNodesChange(changes);
+    router.refresh();
+  };
+
   return (
     <>
-      <ReactFlowProvider >
+      <ReactFlowProvider>
         <ReactFlowMenu />
         <div
-          className="reactflow-wrapper flex-1 w-screen bg-white"
+          className="reactflow-wrapper w-screen flex-1 bg-white"
           ref={reactFlowWrapper}
         >
           <ReactFlow
             nodes={nodes}
             edges={edges}
-            onNodesChange={(changes) => onNodesChange(changes)}
+            onNodesChange={(changes) => handleOnNodeChange(changes)}
             onEdgesChange={onEdgesChange}
             fitView
             connectionMode={ConnectionMode.Loose}
