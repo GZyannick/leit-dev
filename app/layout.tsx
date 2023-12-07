@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description: "Learning programming with leitner and mindmap method to grow",
 };
 
+
 export default function RootLayout({
   children,
 }: {
