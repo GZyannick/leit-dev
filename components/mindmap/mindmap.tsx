@@ -87,8 +87,9 @@ const Mindmap = () => {
   };
 
   const handleOnNodeChange = (changes: NodeChange[]) => {
-    onNodesChange(changes);
-    router.refresh();
+    const routerChange = onNodesChange(changes);
+    console.log(routerChange);
+    if (routerChange) router.refresh();
   };
 
   return (
