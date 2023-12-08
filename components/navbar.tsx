@@ -15,7 +15,6 @@ const Navbar = () => {
 
   const menus = [
     { title: "Mindmap", path: "/mindmap" },
-    { title: "Daily question", path: "/daily-question" },
     { title: "Leitner", path: "/leitner-box" },
   ];
 

@@ -5,7 +5,7 @@ import { InitialProfile } from "@/lib/initial-profile";
 
 // personal method
 import LeitnerCards from "@/components/leitner/leitner-cards";
-
+import GetQuestions from "@/components/daily/server/get-questions";
 const LeitnerPage = async () => {
   const profile = InitialProfile();
   if (!profile) return redirect("/");
@@ -21,7 +21,11 @@ const LeitnerPage = async () => {
     },
   });
 
-  return <LeitnerCards lcards={lcards} />;
+  return (
+    <LeitnerCards lcards={lcards}>
+      <GetQuestions />
+    </LeitnerCards>
+  );
 };
 
 export default LeitnerPage;
