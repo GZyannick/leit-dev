@@ -1,5 +1,5 @@
 "use client";
-
+// import { redirect } from "next/navigation";
 import { Panel } from "reactflow";
 import ColorInput from "@/components/mindmap/input/colorInput";
 import { useState } from "react";
@@ -49,7 +49,7 @@ const ReactFlowMenu = () => {
 
   // on drag object transfer to reactflow to add it in the canvas
   const onDragStart = (e: any, nodeType: any) => {
-    console.log("drag start")
+    console.log("drag start");
     e.dataTransfer.setData("application/reactflow", nodeType);
     e.dataTransfer.effectAllowed = "move";
   };
@@ -66,21 +66,7 @@ const ReactFlowMenu = () => {
   return (
     <Panel position="top-right" className="h-full  " style={{ marginTop: 0 }}>
       <div className="flex h-full flex-col items-center justify-center">
-        <div className="flex w-72 items-center justify-between">
-          <div>
-            <Button variant="outline">
-              <Undo2 />
-            </Button>
-            <Button variant="outline">
-              <Redo2 />
-            </Button>
-          </div>
-          <Button variant="outline">
-            <ArrowBigLeft />
-          </Button>
-        </div>
-
-        <Card className="mt-6 w-72 text-[#4E4E4E]">
+        <Card className="w-72 text-[#4E4E4E]">
           <CardHeader>
             <CardTitle className="flex items-center justify-between text-lg">
               {isEdit ? (
@@ -186,3 +172,28 @@ const ReactFlowMenu = () => {
 };
 
 export default ReactFlowMenu;
+
+//  <div className="flex w-72 items-center justify-between">
+{
+  /* <div> */
+}
+{
+  /* TODO AJOUTER ZUNDO POUR CTRL Z */
+}
+{
+  /* <Button variant="outline">
+      <Undo2 />
+    </Button>
+    <Button variant="outline">
+      <Redo2 />
+    </Button> */
+}
+{
+  /* </div> */
+}
+{
+  /* <Button variant="outline" onClick={() => redirect("/mindmap")}>
+    <ArrowBigLeft />
+  </Button> */
+}
+// </div>

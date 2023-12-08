@@ -43,17 +43,21 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   positionBuffer: { x: 0, y: 0 },
 
   onNodesChange: (changes: NodeChange[]) => {
+    let routerChange = false; // to know if i need to use router.refresh()
     if (changes[0].dragging === true) {
       set({
         positionBuffer: changes[0].position,
       });
     } else if (changes[0].dragging === false) {
       updateNodePosition(changes[0].id, get().positionBuffer);
+      routerChange = true;
     }
 
     set({
       nodes: applyNodeChanges(changes, get().nodes),
     });
+
+    return routerChange;
   },
 
   onEdgesChange: (changes: EdgeChange[]) => {

@@ -33,7 +33,7 @@ const Thumbnail = (props: { refHtml: any; mindMapId: string }) => {
   };
 
   return (
-    <Panel position="top-right">
+    <Panel position="top-left">
       <button onClick={onClick}>screenshot</button>
     </Panel>
   );

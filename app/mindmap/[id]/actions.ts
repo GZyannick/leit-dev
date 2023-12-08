@@ -160,6 +160,7 @@ export const sendToCloudinary = async (dataUrl: string, mindMapId: string) => {
       mindmap.imagePublicId ? { public_id: mindmap.imagePublicId } : {},
     )
     .then(async (res) => {
+      console.log(res);
       if (mindmap.imagePublicId) return;
       await db.mindMap.update({
         where: {

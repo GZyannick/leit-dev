@@ -1,5 +1,12 @@
-//Enlever BUG mindmap show a la creation / modification de la mindmap
 
 
-//TODO faire l'ui de mindmaps#show
-//TODO cacher l'ui avant de prendre la thumbnail
+// TODO mindmap
+    ajouter zundo
+    cacher l'ui avant de prendre la thumbnail
+    pouvoir modifier chacune des nodes individuellement
+    supprimer la popup quand on clique sur une node
+    ajouter une ou plusieurs nodes
+    faire fonctionner la thumbnail onleave
+
+// TODO daily question
+    supprimer la page est la transformer en modal
