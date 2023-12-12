@@ -74,10 +74,10 @@ const InitialLeitnerForm = () => {
         <Button>Create Memory Card</Button>
       </DialogTrigger>
 
-      <DialogContent className="overflow-hidden bg-slate-50 p-0 text-black">
+      <DialogContent className="overflow-hidden p-0 text-[#424242]">
         <DialogHeader className="px-6 pt-8"></DialogHeader>
         <DialogTitle className="text-center text-2xl">
-          create your card
+          create your memory card
         </DialogTitle>
         <DialogDescription className="text-center text-slate-500">
           make youre own question and answer to make you learn better
@@ -97,7 +97,7 @@ const InitialLeitnerForm = () => {
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="border-0 bg-zinc-300 text-black  focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="border  text-[#424242]  focus-visible:ring-0 focus-visible:ring-offset-0"
                         placeholder="Enter question"
                         {...field}
                       />
@@ -119,7 +119,7 @@ const InitialLeitnerForm = () => {
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="border-0 bg-zinc-300 text-black  focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="border1  text-[#424242]  focus-visible:ring-0 focus-visible:ring-offset-0"
                         placeholder="Enter answer"
                         {...field}
                       />
@@ -129,10 +129,8 @@ const InitialLeitnerForm = () => {
                 )}
               />
             </div>
-            <DialogFooter className="bg-gray-100 px-6 py-8">
-              <Button disabled={isLoading} variant="primary">
-                Submit
-              </Button>
+            <DialogFooter className="px-6 py-8">
+              <Button disabled={isLoading}>Submit</Button>
             </DialogFooter>
           </form>
         </Form>
