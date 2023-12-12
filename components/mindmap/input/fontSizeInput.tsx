@@ -1,25 +1,10 @@
 "use client";
 
-// <div>
-//   {/* input fontSize peut etre deplacer dans la nodeModal */}
-//   <p className="text-sm">font size</p>
-//   <div className="flex items-center">
-//     <input
-//       type="number"
-//       defaultValue={16}
-//       min={8}
-//       max={128}
-//       className="w-12"
-//       onChange={(e) => updateGlobalFontSizeStyle(e.target.value)}
-//     />
-//     <p>px</p>
-//   </div>
-// </div>;
-
-const FontSizeInput = (params: {
+export const FontSizeInput = (params: {
   title: string;
   fontSize: string;
-  setValue: (value: string) => void;
+  type?: string;
+  setValue: (value: string, type?: string) => void;
 }) => {
   return (
     <div className="mx-2 mb-2">
@@ -32,7 +17,11 @@ const FontSizeInput = (params: {
           min={8}
           max={128}
           className="mr-2 block h-6 w-full bg-transparent shadow-none"
-          onChange={(e) => params.setValue(e.target.value)}
+          onChange={(e) => {
+            params.type
+              ? params.setValue(e.target.value, params.type)
+              : params.setValue(e.target.value);
+          }}
           name="fontSize"
           id="fontSize"
         />

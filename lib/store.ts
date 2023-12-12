@@ -14,6 +14,7 @@ import {
   ReactFlowInstance,
   NodeChange,
   EdgeChange,
+  Background,
 } from "reactflow";
 
 import { RFState } from "@/lib/types";
@@ -35,6 +36,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   edges: [],
   mindMapId: "",
   mindMapName: "",
+  currentNodeId: "",
   stroke: "#000000",
   fontSize: "1rem",
   color: "#023047",
@@ -58,6 +60,13 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     });
 
     return routerChange;
+  },
+
+  setCurrentNodeId: (id: string) => {
+    if (!id) return;
+    set({
+      currentNodeId: id,
+    });
   },
 
   onEdgesChange: (changes: EdgeChange[]) => {
@@ -88,15 +97,21 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     });
   },
 
-  updateSpecificNodeStyle: (
-    nodeId: string,
-    style: { color: string; fontSize: string; background: string },
-  ) => {
+  updateSpecificNodeStyle: (value: string, type: string) => {
+    const nodeId = get().currentNodeId;
     set({
       nodes: get().nodes.map((node) => {
         if (node.id === nodeId) {
-          node.data = { ...node.data, style };
-          updateNode(node);
+          node.data = {
+            ...node.data,
+            style: {
+              color: type === "text" ? value : node.data.style.color,
+              fontSize: type === "fs" ? value + "px" : node.data.style.fontSize,
+              background: type === "bg" ? value : node.data.style.background,
+            },
+          };
+          // trouver un moyen update la node apres avoir fini de changer lombre
+          // updateNode(node);
         }
         return node;
       }),

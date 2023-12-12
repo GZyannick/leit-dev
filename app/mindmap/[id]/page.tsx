@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { InitialProfile } from "@/lib/initial-profile";
 import { redirect } from "next/navigation";
 import { Node, Edge } from "reactflow";
-import { getEdge, newGetMindMap } from "./actions";
+import { getEdge, GetMindMap } from "./actions";
 // import takeThumbnail from "@/lib/take-thumbnail";
 // transform database nodes and edges to two different object for reactflow
 const dataToReactflowNode = (nodes: any) => {
@@ -49,7 +49,7 @@ const MindMapPage = async ({ params }: { params: { id: string } }) => {
   if (!profile && params.id) redirect("/mindmap");
 
   // ive make res.props to revalidate each 10s the data or the position update wont be taken when user leave and came back
-  const currentMindMap = await newGetMindMap(params.id, profile.id);
+  const currentMindMap = await GetMindMap(params.id, profile.id);
   const mindMapNodes = currentMindMap ? currentMindMap.nodes : [];
   const reactflowNode: Node[] = dataToReactflowNode(mindMapNodes);
   const reactflowEdge: Edge[] = dataToReactflowEdge(await getEdge(params.id));

@@ -36,10 +36,12 @@ const NodeModal = (params: NodeModalType) => {
   return (
     <div
       id="node-modal"
-      className={`absolute z-10 flex items-center rounded bg-slate-600 p-2 ${
+      className={`absolute  left-5 top-5 z-10 flex items-center rounded bg-slate-600 p-2 ${
         params.isOpen ? "block" : "hidden"
       }`}
-    ></div>
+    >
+      AAA
+    </div>
   );
 };
 
