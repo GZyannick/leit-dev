@@ -2,7 +2,7 @@
 
 import useMindmapStore from "@/lib/store";
 import { useCallback } from "react";
-import { NodeProps, Node, Handle, Position } from "reactflow";
+import { NodeProps, Handle, Position } from "reactflow";
 import { NodeData } from "@/lib/types";
 
 export const MindMapNode = ({

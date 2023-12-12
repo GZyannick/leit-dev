@@ -1,17 +1,9 @@
 "use client";
-import {
-  useState,
-  useCallback,
-  useRef,
-  MutableRefObject,
-  useEffect,
-} from "react";
+import { useState, useCallback, useRef, MutableRefObject } from "react";
 import { shallow } from "zustand/shallow";
 import ReactFlow, {
   Background,
   Controls,
-  Edge,
-  Node,
   ReactFlowProvider,
   ReactFlowInstance,
   ConnectionMode,
@@ -23,7 +15,6 @@ import {
   defaultEdgeOptions,
   nodeTypes,
   proOptions,
-  globalStyle,
 } from "@/lib/mindmapOptions";
 import "reactflow/dist/style.css";
 import NodeModal from "@/components/mindmap/modals/nodeModal";
@@ -40,6 +31,7 @@ const selector = (state: any) => ({
   onDrop: state.onDrop,
   onNodeDelete: state.onNodeDelete,
   onEdgeDelete: state.onEdgeDelete,
+  setCurrentNodeId: state.setCurrentNodeId,
 });
 
 // const Mindmap = ({ takeThumbnail }: any) => {
@@ -54,6 +46,7 @@ const Mindmap = () => {
     onNodeDelete,
     onEdgeDelete,
     mindMapId,
+    setCurrentNodeId,
   } = useMindmapStore(selector, shallow);
 
   const router = useRouter();
@@ -64,7 +57,6 @@ const Mindmap = () => {
   //NodeModalState
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0, height: 0, width: 0 });
-  const [currentId, setCurrentId] = useState();
 
   const onDragOver = useCallback((e: any) => {
     e.preventDefault();
@@ -83,19 +75,18 @@ const Mindmap = () => {
     });
 
     setIsOpen(true);
-    setCurrentId(e.target.id);
+    setCurrentNodeId(e.target.id);
   };
 
   const handleOnNodeChange = (changes: NodeChange[]) => {
-    const routerChange = onNodesChange(changes);
-    console.log(routerChange);
-    if (routerChange) router.refresh();
+    const routerNeedsChange = onNodesChange(changes);
+    if (routerNeedsChange) router.refresh();
   };
 
   return (
     <>
       <ReactFlowProvider>
-        <ReactFlowMenu />
+        <ReactFlowMenu isOpen={isOpen} />
         <div
           className="reactflow-wrapper w-screen flex-1 bg-white"
           ref={reactFlowWrapper}
@@ -124,12 +115,12 @@ const Mindmap = () => {
           >
             <Background />
             <Controls />
-            <NodeModal
+            {/* <NodeModal
               isOpen={isOpen}
               position={position}
               setIsOpen={setIsOpen}
               currentId={currentId}
-            />
+            /> */}
             <Thumbnail refHtml={reactFlowWrapper} mindMapId={mindMapId} />
           </ReactFlow>
         </div>

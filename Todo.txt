@@ -12,7 +12,3 @@
 
     cacher l'ui avant de prendre la thumbnail
     ajouter zundo
-
-
-// TODO daily question
-    supprimer la page est la transformer en modal

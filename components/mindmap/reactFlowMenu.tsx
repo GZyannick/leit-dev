@@ -1,7 +1,10 @@
 "use client";
 // import { redirect } from "next/navigation";
 import { Panel } from "reactflow";
-import ColorInput from "@/components/mindmap/input/colorInput";
+import {
+  ColorInput,
+  SpecificColorInput,
+} from "@/components/mindmap/input/colorInput";
 import { useState } from "react";
 import { shallow } from "zustand/shallow";
 import useMindmapStore from "@/lib/store";
@@ -28,9 +31,10 @@ const selector = (state: any) => ({
   updateGlobalFontSizeStyle: state.updateGlobalFontSizeStyle,
   updateGlobalBackgroundStyle: state.updateGlobalBackgroundStyle,
   updateMindmapName: state.updateMindmapName,
+  updateSpecificNodeStyle: state.updateSpecificNodeStyle,
 });
 
-const ReactFlowMenu = () => {
+const ReactFlowMenu = ({ isOpen }: { isOpen: Boolean }) => {
   const [isEdit, setIsEdit] = useState(false);
   const {
     mindMapName,
@@ -44,6 +48,7 @@ const ReactFlowMenu = () => {
     updateGlobalColorStyle,
     updateGlobalStrokeStyle,
     updateMindmapName,
+    updateSpecificNodeStyle,
   } = useMindmapStore(selector, shallow);
   const [mindmapTitle, setMindmapTitle] = useState(mindMapName);
 
@@ -164,6 +169,29 @@ const ReactFlowMenu = () => {
               />
             </div>
             <Separator className="my-4" />
+            <p>Specific</p>
+            <div className={`mt-2 grid-cols-2 ${isOpen ? "grid" : "hidden"}`}>
+              <SpecificColorInput
+                title="Background"
+                type="bg"
+                setValue={updateSpecificNodeStyle}
+                color={background}
+              />
+
+              <SpecificColorInput
+                title="Text"
+                setValue={updateSpecificNodeStyle}
+                type="text"
+                color={color}
+              />
+
+              <FontSizeInput
+                title="Font Size"
+                type="fs"
+                setValue={updateSpecificNodeStyle}
+                fontSize={fontSize}
+              />
+            </div>
           </CardContent>
         </Card>
       </div>
