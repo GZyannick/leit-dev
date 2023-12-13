@@ -121,7 +121,6 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
 
   // onConnect allow to create Edge
   onConnect: async (connection: any) => {
-    connection.id = randomUUID();
     connection.animated = false;
     connection.style = {
       stroke: get().stroke,
@@ -151,28 +150,20 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     });
   },
 
-  updateGlobalFontSizeStyle: (fontSize: string) => {
-    set({
-      fontSize: fontSize + "px",
-    });
-  },
-
-  updateGlobalColorStyle: (color: string) => {
-    set({
-      color: color,
-    });
-  },
-
-  updateGlobalStrokeStyle: (color: string) => {
-    set({
-      stroke: color,
-    });
-  },
-
-  updateGlobalBackgroundStyle: (color: string) => {
-    set({
-      background: color,
-    });
+  updateGlobalStyle: (value: string, type: string) => {
+    switch (type) {
+      case "fs":
+        set({ fontSize: value + "px" });
+        break;
+      case "text":
+        set({ color: value });
+        break;
+      case "bg":
+        set({ background: value });
+        break;
+      case "stroke":
+        set({ stroke: value });
+    }
   },
 
   updateContentValue: (params: { value: string; nodeId: string }) => {
