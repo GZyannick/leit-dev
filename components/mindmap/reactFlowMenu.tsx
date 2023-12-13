@@ -1,10 +1,7 @@
 "use client";
 // import { redirect } from "next/navigation";
 import { Panel } from "reactflow";
-import {
-  ColorInput,
-  SpecificColorInput,
-} from "@/components/mindmap/input/colorInput";
+import { ColorInput } from "@/components/mindmap/input/colorInput";
 import { useState } from "react";
 import { shallow } from "zustand/shallow";
 import useMindmapStore from "@/lib/store";
@@ -171,14 +168,14 @@ const ReactFlowMenu = ({ isOpen }: { isOpen: Boolean }) => {
             <Separator className="my-4" />
             <p>Specific</p>
             <div className={`mt-2 grid-cols-2 ${isOpen ? "grid" : "hidden"}`}>
-              <SpecificColorInput
+              <ColorInput
                 title="Background"
                 type="bg"
                 setValue={updateSpecificNodeStyle}
                 color={background}
               />
 
-              <SpecificColorInput
+              <ColorInput
                 title="Text"
                 setValue={updateSpecificNodeStyle}
                 type="text"
