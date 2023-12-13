@@ -4,7 +4,7 @@ import { Panel } from "reactflow";
 import { ColorInput } from "@/components/mindmap/input/colorInput";
 import { useState } from "react";
 import { shallow } from "zustand/shallow";
-import useMindmapStore from "@/lib/store";
+import useMindmapStore from "@/lib/new-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
