@@ -8,7 +8,8 @@ import useMindmapStore from "@/lib/store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { ArrowBigLeft, Undo2, Redo2, Pencil, Save } from "lucide-react";
+// import { ArrowBigLeft, Undo2, Redo2, Pencil, Save } from "lucide-react";
+import { Pencil, Save } from "lucide-react";
 import FontSizeInput from "./input/fontSizeInput";
 import DeleteDialog from "./modals/deleteDialog";
 import { deleteMindmap } from "@/app/mindmap/[id]/actions";
@@ -197,28 +198,3 @@ const ReactFlowMenu = ({ isOpen }: { isOpen: Boolean }) => {
 };
 
 export default ReactFlowMenu;
-
-//  <div className="flex w-72 items-center justify-between">
-{
-  /* <div> */
-}
-{
-  /* TODO AJOUTER ZUNDO POUR CTRL Z */
-}
-{
-  /* <Button variant="outline">
-      <Undo2 />
-    </Button>
-    <Button variant="outline">
-      <Redo2 />
-    </Button> */
-}
-{
-  /* </div> */
-}
-{
-  /* <Button variant="outline" onClick={() => redirect("/mindmap")}>
-    <ArrowBigLeft />
-  </Button> */
-}
-// </div>
