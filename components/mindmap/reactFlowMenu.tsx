@@ -24,10 +24,7 @@ const selector = (state: any) => ({
   color: state.color,
   fontSize: state.fontSize,
   background: state.background,
-  updateGlobalStrokeStyle: state.updateGlobalStrokeStyle,
-  updateGlobalColorStyle: state.updateGlobalColorStyle,
-  updateGlobalFontSizeStyle: state.updateGlobalFontSizeStyle,
-  updateGlobalBackgroundStyle: state.updateGlobalBackgroundStyle,
+  updateGlobalStyle: state.updateGlobalStyle,
   updateMindmapName: state.updateMindmapName,
   updateSpecificNodeStyle: state.updateSpecificNodeStyle,
 });
@@ -41,10 +38,7 @@ const ReactFlowMenu = ({ isOpen }: { isOpen: Boolean }) => {
     color,
     background,
     fontSize,
-    updateGlobalBackgroundStyle,
-    updateGlobalFontSizeStyle,
-    updateGlobalColorStyle,
-    updateGlobalStrokeStyle,
+    updateGlobalStyle,
     updateMindmapName,
     updateSpecificNodeStyle,
   } = useMindmapStore(selector, shallow);
@@ -146,23 +140,27 @@ const ReactFlowMenu = ({ isOpen }: { isOpen: Boolean }) => {
             <div className="mt-2 grid grid-cols-2">
               <ColorInput
                 title="Background"
-                setValue={updateGlobalBackgroundStyle}
+                setValue={updateGlobalStyle}
+                type="bg"
                 color={background}
               />
               <ColorInput
                 title="Stroke"
-                setValue={updateGlobalStrokeStyle}
+                setValue={updateGlobalStyle}
+                type="stroke"
                 color={stroke}
               />
               <ColorInput
                 title="Text"
-                setValue={updateGlobalColorStyle}
+                setValue={updateGlobalStyle}
+                type="text"
                 color={color}
               />
 
               <FontSizeInput
                 title="Font Size"
-                setValue={updateGlobalFontSizeStyle}
+                type="fs"
+                setValue={updateGlobalStyle}
                 fontSize={fontSize}
               />
             </div>
