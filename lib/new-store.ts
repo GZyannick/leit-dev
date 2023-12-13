@@ -121,7 +121,6 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
 
   // onConnect allow to create Edge
   onConnect: async (connection: any) => {
-    connection.id = randomUUID();
     connection.animated = false;
     connection.style = {
       stroke: get().stroke,
