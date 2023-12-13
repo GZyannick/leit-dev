@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import useMindmapStore from "@/lib/store";
+import useMindmapStore from "@/lib/new-store";
 import { Node, Edge } from "reactflow";
 
 const StoreInitializer = ({

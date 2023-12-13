@@ -9,7 +9,7 @@ import ReactFlow, {
   ConnectionMode,
   NodeChange,
 } from "reactflow";
-import useMindmapStore from "@/lib/store";
+import useMindmapStore from "@/lib/new-store";
 import {
   fitViewOptions,
   defaultEdgeOptions,
@@ -29,8 +29,6 @@ const selector = (state: any) => ({
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
   onDrop: state.onDrop,
-  onNodeDelete: state.onNodeDelete,
-  onEdgeDelete: state.onEdgeDelete,
   setCurrentNodeId: state.setCurrentNodeId,
 });
 
@@ -43,8 +41,6 @@ const Mindmap = () => {
     onEdgesChange,
     onConnect,
     onDrop,
-    onNodeDelete,
-    onEdgeDelete,
     mindMapId,
     setCurrentNodeId,
   } = useMindmapStore(selector, shallow);
@@ -104,8 +100,6 @@ const Mindmap = () => {
             onDrop={(event) =>
               onDrop(event, reactFlowWrapper, reactFlowInstance)
             }
-            onNodesDelete={onNodeDelete}
-            onEdgesDelete={onEdgeDelete}
             onDragOver={onDragOver}
             proOptions={proOptions}
             fitViewOptions={fitViewOptions}

@@ -1,6 +1,6 @@
 "use client";
 
-import useMindmapStore from "@/lib/store";
+import useMindmapStore from "@/lib/new-store";
 import { useCallback } from "react";
 import { NodeProps, Handle, Position } from "reactflow";
 import { NodeData } from "@/lib/types";

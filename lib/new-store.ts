@@ -39,8 +39,6 @@ export type RFState = {
 import { createWithEqualityFn } from "zustand/traditional";
 import { MutableRefObject } from "react";
 
-import { randomUUID } from "crypto";
-
 const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   nodes: [],
   edges: [],
@@ -60,9 +58,11 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
         positionBuffer: changes[0].position,
       });
     }
+
     set({
       nodes: applyNodeChanges(changes, get().nodes),
     });
+    console.log(get().nodes);
   },
 
   setCurrentNodeId: (id: string) => {
@@ -78,6 +78,48 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     });
   },
 
+  //onDrop allow to create new Node
+  onDrop: (
+    event: any,
+    reactFlowWrapper: MutableRefObject<HTMLDivElement>,
+    reactFlowInstance: ReactFlowInstance,
+  ) => {
+    event.preventDefault();
+    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+
+    let type = event.dataTransfer.getData("application/reactflow");
+    if (!type) type = "mindMap";
+    if (!reactFlowInstance) return;
+
+    const position = reactFlowInstance.project({
+      x: event.clientX - reactFlowBounds.left,
+      y: event.clientY - reactFlowBounds.top,
+    });
+
+    console.log("color :", get().color);
+    console.log("background :", get().background);
+    console.log("font size :", get().fontSize);
+
+    const newNode = {
+      id: `node-${get().id}`,
+      type,
+      position,
+      data: {
+        label: `${type} node ${get().id}`,
+        style: {
+          color: get().color,
+          background: get().background,
+          fontSize: get().fontSize,
+        },
+      },
+    };
+    set({
+      id: get().id + 1,
+      nodes: [...get().nodes, newNode],
+    });
+  },
+
+  // onConnect allow to create Edge
   onConnect: async (connection: any) => {
     connection.id = randomUUID();
     connection.animated = false;
@@ -144,41 +186,6 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     });
   },
 
-  onDrop: (
-    event: any,
-    reactFlowWrapper: MutableRefObject<HTMLDivElement>,
-    reactFlowInstance: ReactFlowInstance,
-  ) => {
-    event.preventDefault();
-    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-
-    let type = event.dataTransfer.getData("application/reactflow");
-    if (!type) type = "mindMap";
-    if (!reactFlowInstance) return;
-
-    const position = reactFlowInstance.project({
-      x: event.clientX - reactFlowBounds.left,
-      y: event.clientY - reactFlowBounds.top,
-    });
-
-    const newNode = {
-      id: randomUUID(),
-      type,
-      position,
-      data: {
-        label: `${type} node ${get().id}`,
-        style: {
-          color: get().color,
-          background: get().background,
-          fontSize: get().fontSize,
-        },
-      },
-    };
-    set({
-      nodes: [...get().nodes, newNode],
-    });
-  },
-
   updateMindmapName: (event: string) => {
     if (get().mindMapName === event) return;
     set({
@@ -195,3 +202,33 @@ export default useMindmapStore;
 
 // Check if Node or Edge still exist in front//
 // check if node or edge Style / value still the same
+
+// add absolute position in database ?
+
+// ----------- Look of what looks like a node object in reactflow ----------- //
+// [
+//     {
+//         "id": "node-0",
+//         "type": "background",
+//         "position": {
+//             "x": 850.1672573802939,
+//             "y": 54.95085921714296
+//         },
+//         "data": {
+//             "label": "background node 0",
+//             "style": {
+//                 "color": "#023047",
+//                 "background": "#4C5760",
+//                 "fontSize": "1rem"
+//             }
+//         },
+//         "width": 109,
+//         "height": 40,
+//         "selected": true,
+//         "positionAbsolute": {
+//             "x": 850.1672573802939,
+//             "y": 54.95085921714296
+//         },
+//         "dragging": false
+//     }
+// ]
