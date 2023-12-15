@@ -1,5 +1,12 @@
 "use client";
-import { useState, useCallback, useRef, MutableRefObject } from "react";
+import { toPng } from "html-to-image";
+import {
+  useState,
+  useCallback,
+  useRef,
+  MutableRefObject,
+  useEffect,
+} from "react";
 import { shallow } from "zustand/shallow";
 import ReactFlow, {
   Background,
@@ -8,6 +15,9 @@ import ReactFlow, {
   ReactFlowInstance,
   ConnectionMode,
   NodeChange,
+  // useReactFlow,
+  // getRectOfNodes,
+  // getTransformForBounds,
 } from "reactflow";
 import useMindmapStore from "@/lib/new-store";
 import {
@@ -17,7 +27,12 @@ import {
   proOptions,
 } from "@/lib/mindmapOptions";
 import "reactflow/dist/style.css";
-import NodeModal from "@/components/mindmap/modals/nodeModal";
+
+//cloudinary
+// import { sendToCloudinary } from "@/app/mindmap/[id]/actions";
+// import { useTransition } from "react";
+
+// import NodeModal from "@/components/mindmap/modals/nodeModal";
 import ReactFlowMenu from "@/components/mindmap/reactFlowMenu";
 import Thumbnail from "@/components/mindmap/thumbnail";
 import { useRouter } from "next/navigation";
@@ -30,6 +45,7 @@ const selector = (state: any) => ({
   onConnect: state.onConnect,
   onDrop: state.onDrop,
   setCurrentNodeId: state.setCurrentNodeId,
+  updateData: state.updateData,
 });
 
 // const Mindmap = ({ takeThumbnail }: any) => {
@@ -43,12 +59,54 @@ const Mindmap = () => {
     onDrop,
     mindMapId,
     setCurrentNodeId,
+    updateData,
   } = useMindmapStore(selector, shallow);
+  // let [isPending, startTransition] = useTransition();
 
   const router = useRouter();
   const reactFlowWrapper = useRef() as MutableRefObject<HTMLDivElement>;
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance>();
+
+  // const { getNodes } = useReactFlow();
+  // const handleLeave = (event: any) => {
+  //   const imageWidth = 1920;
+  //   const imageHeight = 1080;
+  //   const nodesBounds = getRectOfNodes(getNodes());
+  //   const transform = getTransformForBounds(
+  //     nodesBounds,
+  //     imageWidth,
+  //     imageHeight,
+  //     0.5,
+  //     2,
+  //   );
+
+  //   toPng(reactFlowWrapper.current, {
+  //     width: imageWidth,
+  //     height: imageHeight,
+  //   }).then((data: string) => {
+  //     startTransition(() => sendToCloudinary(data, mindMapId));
+  //   });
+
+  //   console.log("LEAVING");
+  // };
+  //
+
+  const handleLeave = (event: any) => {
+    updateData();
+
+    // if (routerNeedsChange) router.refresh();
+  };
+
+  useEffect(() => {
+    reactFlowWrapper.current?.addEventListener("mouseleave", handleLeave);
+    reactFlowWrapper.current?.addEventListener("beforeunload", handleLeave);
+
+    return () => {
+      reactFlowWrapper.current?.removeEventListener("mouseleave", handleLeave);
+      reactFlowWrapper.current?.addEventListener("beforeunload", handleLeave);
+    };
+  });
 
   //NodeModalState
   const [isOpen, setIsOpen] = useState(false);
@@ -82,8 +140,8 @@ const Mindmap = () => {
   return (
     <>
       <ReactFlowProvider>
-        <ReactFlowMenu isOpen={isOpen} />
         <div
+          id="wrapper"
           className="reactflow-wrapper w-screen flex-1 bg-white"
           ref={reactFlowWrapper}
         >
@@ -109,12 +167,8 @@ const Mindmap = () => {
           >
             <Background />
             <Controls />
-            {/* <NodeModal
-              isOpen={isOpen}
-              position={position}
-              setIsOpen={setIsOpen}
-              currentId={currentId}
-            /> */}
+            <ReactFlowMenu isOpen={isOpen} />
+
             <Thumbnail refHtml={reactFlowWrapper} mindMapId={mindMapId} />
           </ReactFlow>
         </div>

@@ -1,5 +1,10 @@
 
 
+Je dois mettre MouseLeave / BeforeUnload / CMD + S / CTRL + S in mindmap and when leaving the mouse of canvas area
+sauvegarder est prendre le screenshot
+
+
+
 // TODO mindmap
 
     supprimer la popup quand on clique sur une node
