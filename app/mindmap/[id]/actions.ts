@@ -1,5 +1,6 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
+
 import { NodeType, CreateNodeType, CreateEdgeType } from "@/lib/types";
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
@@ -30,6 +31,26 @@ export const GetMindMap = async (id: string, profileId: string) => {
   return res;
 };
 
+export const GetMindmapNodeAndEdge = async (id: string) => {
+  const profile = await currentProfile();
+  if (!profile) return;
+  const res = await db.mindMap.findUnique({
+    where: {
+      id,
+      profileId: profile.id,
+    },
+    include: {
+      nodes: {
+        include: {
+          edges: true,
+        },
+      },
+    },
+  });
+
+  return res;
+};
+
 export const getEdge = async (mindMapId: string) => {
   const res = await db.edge.findMany({
     where: { mindMapId },
@@ -39,6 +60,35 @@ export const getEdge = async (mindMapId: string) => {
 };
 
 // -------------- Create -------------- //
+
+// {
+//     "id": "8832a89b-638a-4596-8579-1777958d88dc",
+//     "type": "mindMap",
+//     "position": {
+//         "x": 1632.5581366783715,
+//         "y": -427.2549467729588
+//     },
+//     "data": {
+//         "label": "mindMap node 1",
+//         "value": "When Leaving",
+//         "style": {
+//             "color": "#023047",
+//             "fontSize": "1rem",
+//             "background": "#4e84b1"
+//         }
+//     },
+//     "width": 187,
+//     "height": 42,
+//     "selected": false,
+//     "positionAbsolute": {
+//         "x": 1632.5581366783715,
+//         "y": -427.2549467729588
+//     },
+//     "dragging": false
+// }
+export const CreateOrUpdate = async (req: Node[], mindmapId: string) => {
+  if (!req) return;
+};
 
 export const createEdge = async (req: CreateEdgeType) => {
   const res = await db.edge.create({
@@ -62,24 +112,22 @@ export const createEdge = async (req: CreateEdgeType) => {
   return res.id;
 };
 
-export const createNode = async (req: CreateNodeType) => {
+export const createNode = async (req: Node, mindmapId: string) => {
   const res = await db.node.create({
     data: {
-      label: req.label,
-      value: req.value,
-      background: req.background,
-      color: req.color,
-      fontSize: req.fontSize,
-      xPos: req.xPos,
-      yPos: req.yPos,
-      type: req.type,
+      label: req.data.label,
+      value: req.data.value,
+      background: req.data.style.background,
+      color: req.data.style.color,
+      fontSize: req.data.style.fontSize,
+      xPos: req.position.x,
+      yPos: req.position.y,
+      type: req.type ? req.type : "background",
       mindMap: {
-        connect: { id: req.mindMapId },
+        connect: { id: mindmapId },
       },
     },
   });
-  revalidatePath("/mindmap/[id]");
-  return res.id;
 };
 
 // -------------- Update -------------- //
@@ -111,8 +159,6 @@ export const updateNode = async (req: Node) => {
       type: req.type,
     },
   });
-
-  console.log("updated");
 };
 
 export const updateNodePosition = async (

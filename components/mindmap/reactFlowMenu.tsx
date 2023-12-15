@@ -6,11 +6,14 @@ import { useState } from "react";
 import { shallow } from "zustand/shallow";
 import useMindmapStore from "@/lib/new-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ReactflowMenuDragInput,
+  ReactflowMenuInputs,
+} from "@/components/mindmap/input/reactflowMenuInput";
+
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 // import { ArrowBigLeft, Undo2, Redo2, Pencil, Save } from "lucide-react";
 import { Pencil, Save } from "lucide-react";
-import FontSizeInput from "./input/fontSizeInput";
 import DeleteDialog from "./modals/deleteDialog";
 import { deleteMindmap } from "@/app/mindmap/[id]/actions";
 const title = "Are you absolutely sure?";
@@ -43,13 +46,6 @@ const ReactFlowMenu = ({ isOpen }: { isOpen: Boolean }) => {
     updateSpecificNodeStyle,
   } = useMindmapStore(selector, shallow);
   const [mindmapTitle, setMindmapTitle] = useState(mindMapName);
-
-  // on drag object transfer to reactflow to add it in the canvas
-  const onDragStart = (e: any, nodeType: any) => {
-    console.log("drag start");
-    e.dataTransfer.setData("application/reactflow", nodeType);
-    e.dataTransfer.effectAllowed = "move";
-  };
 
   const handleIsEdit = () => {
     if (isEdit) updateMindmapName(mindmapTitle);
@@ -114,78 +110,32 @@ const ReactFlowMenu = ({ isOpen }: { isOpen: Boolean }) => {
           </CardHeader>
           <CardContent>
             <p>Nodes</p>
-            <div id="lt-nodes" className="mt-3">
-              <ul className="flex items-center">
-                <li
-                  className="text-m mr-4 rounded border px-4 py-1 transition ease-in hover:scale-105"
-                  style={{ background: background, color: color }}
-                  onDragStart={(e) => onDragStart(e, "background")}
-                  draggable
-                >
-                  node
-                </li>
-
-                <li
-                  className=" text-m border-b-2 px-4 py-1 text-center transition ease-in hover:scale-105"
-                  style={{ borderColor: background, color: color }}
-                  onDragStart={(e) => onDragStart(e, "mindMap")}
-                  draggable
-                >
-                  node
-                </li>
-              </ul>
-            </div>
+            <ReactflowMenuDragInput background={background} color={color} />
             <Separator className="my-4" />
             <p>General</p>
             <div className="mt-2 grid grid-cols-2">
-              <ColorInput
-                title="Background"
-                setValue={updateGlobalStyle}
-                type="bg"
-                color={background}
-              />
-              <ColorInput
-                title="Stroke"
-                setValue={updateGlobalStyle}
-                type="stroke"
-                color={stroke}
-              />
-              <ColorInput
-                title="Text"
-                setValue={updateGlobalStyle}
-                type="text"
+              <ReactflowMenuInputs
+                background={background}
                 color={color}
-              />
-
-              <FontSizeInput
-                title="Font Size"
-                type="fs"
-                setValue={updateGlobalStyle}
                 fontSize={fontSize}
-              />
+                updateStyle={updateGlobalStyle}
+              >
+                <ColorInput
+                  title="Stroke"
+                  setValue={updateGlobalStyle}
+                  type="stroke"
+                  color={stroke}
+                />
+              </ReactflowMenuInputs>
             </div>
             <Separator className="my-4" />
             <p>Specific</p>
             <div className={`mt-2 grid-cols-2 ${isOpen ? "grid" : "hidden"}`}>
-              <ColorInput
-                title="Background"
-                type="bg"
-                setValue={updateSpecificNodeStyle}
-                color={background}
-              />
-
-              <ColorInput
-                title="Text"
-                setValue={updateSpecificNodeStyle}
-                type="text"
+              <ReactflowMenuInputs
+                background={background}
                 color={color}
-              />
-
-              <FontSizeInput
-                title="Font Size"
-                type="fs"
-                setValue={updateSpecificNodeStyle}
                 fontSize={fontSize}
+                updateStyle={updateSpecificNodeStyle}
               />
             </div>
           </CardContent>
