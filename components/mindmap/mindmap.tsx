@@ -68,30 +68,6 @@ const Mindmap = () => {
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance>();
 
-  // const { getNodes } = useReactFlow();
-  // const handleLeave = (event: any) => {
-  //   const imageWidth = 1920;
-  //   const imageHeight = 1080;
-  //   const nodesBounds = getRectOfNodes(getNodes());
-  //   const transform = getTransformForBounds(
-  //     nodesBounds,
-  //     imageWidth,
-  //     imageHeight,
-  //     0.5,
-  //     2,
-  //   );
-
-  //   toPng(reactFlowWrapper.current, {
-  //     width: imageWidth,
-  //     height: imageHeight,
-  //   }).then((data: string) => {
-  //     startTransition(() => sendToCloudinary(data, mindMapId));
-  //   });
-
-  //   console.log("LEAVING");
-  // };
-  //
-
   const handleLeave = (event: any) => {
     const routerNeedsChange = updateData();
 
