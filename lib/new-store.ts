@@ -126,11 +126,11 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
       });
     }
 
-    get().addToCrudArrays(changes);
-
     set({
       nodes: applyNodeChanges(changes, get().nodes),
     });
+
+    get().addToCrudArrays(changes);
   },
 
   setCurrentNodeId: (id: string) => {
