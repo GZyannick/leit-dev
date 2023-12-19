@@ -19,9 +19,9 @@ import {
 
 import {
   GetMindmapNodeAndEdge,
-  CreateOrUpdate,
-  updateNode,
-  createNode,
+  CreateMany,
+  UpdateMany,
+  DeleteMany,
 } from "@/app/mindmap/[id]/actions";
 
 export type RFState = {
@@ -128,7 +128,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     if (isFoundInToCreate) {
       // if is in toCreate change in this array
       // if its not in toCreate we check in toUpdate if its true change in this array
-      // else we add it to toUpdate by retrieving from nodes becaue NodeChange didnt have all the information of a Node
+      // else we add it to toUpdate by retrieving from nodes because NodeChange didnt have all the information of a Node
       set({
         toCreateNodes: applyNodeChanges(changes, get().toCreateNodes),
       });
@@ -345,7 +345,25 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   //   //   CreateOrUpdate(modifiedNodes, res.id);
   // },
   //
-  updateData: async () => {},
+  updateData: async () => {
+    const toUpdate = get().toUpdateNodes;
+    const toCreate = get().toCreateNodes;
+    const toDelete = get().toDeleteNodes;
+    const mindMapId = get().mindMapId;
+    if (toUpdate.length === 0 && toCreate.length === 0 && toDelete.length === 0)
+      return false;
+
+    if (toCreate.length > 0) await CreateMany(toCreate, mindMapId);
+    if (toUpdate.length > 0) await UpdateMany(toUpdate, mindMapId);
+    if (toDelete.length > 0) await DeleteMany(toDelete, mindMapId);
+    set({
+      toCreateNodes: [],
+      toUpdateNodes: [],
+      toDeleteNodes: [],
+    });
+
+    return true;
+  },
 }));
 
 export default useMindmapStore;

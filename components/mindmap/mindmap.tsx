@@ -93,9 +93,9 @@ const Mindmap = () => {
   //
 
   const handleLeave = (event: any) => {
-    updateData();
+    const routerNeedsChange = updateData();
 
-    // if (routerNeedsChange) router.refresh();
+    if (routerNeedsChange) router.refresh();
   };
 
   useEffect(() => {

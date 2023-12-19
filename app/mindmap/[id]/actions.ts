@@ -86,8 +86,60 @@ export const getEdge = async (mindMapId: string) => {
 //     },
 //     "dragging": false
 // }
-export const CreateOrUpdate = async (req: Node[], mindmapId: string) => {
-  if (!req) return;
+export const CreateMany = async (req: Node[], mindmapId: string) => {
+  if (!req || req.length === 0) return;
+
+  req.map(async (node) => {
+    const res = await db.node.create({
+      data: {
+        label: node.data.label,
+        value: node.data.value,
+        background: node.data.style.background,
+        color: node.data.style.color,
+        fontSize: node.data.style.fontSize,
+        xPos: node.position.x,
+        yPos: node.position.y,
+        type: node.type ? node.type : "background",
+        mindMap: {
+          connect: { id: mindmapId },
+        },
+      },
+    });
+  });
+};
+
+export const UpdateMany = async (req: Node[], mindmapId: string) => {
+  if (!req || req.length === 0) return;
+  req.map(async (node) => {
+    await db.node.update({
+      where: {
+        id: node.id,
+        mindMapId: mindmapId,
+      },
+      data: {
+        label: node.data.label,
+        value: node.data.value,
+        background: node.data.style.background,
+        color: node.data.style.color,
+        fontSize: node.data.style.fontSize,
+        xPos: node.position.x,
+        yPos: node.position.y,
+        type: node.type ? node.type : "background",
+      },
+    });
+  });
+};
+
+export const DeleteMany = async (req: Node[], mindmapId: string) => {
+  if (!req || req.length === 0) return;
+  req.map(async (node) => {
+    await db.node.delete({
+      where: {
+        id: node.id,
+        mindMapId: mindmapId,
+      },
+    });
+  });
 };
 
 export const createEdge = async (req: CreateEdgeType) => {
