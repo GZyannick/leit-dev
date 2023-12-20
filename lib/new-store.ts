@@ -30,6 +30,8 @@ export type RFState = {
   toCreateNodes: Node[];
   toUpdateNodes: Node[];
   toDeleteNodes: Node[];
+  toCreateEdges: Edge[];
+
   stroke: string;
   background: string;
   mindMapId: string;
@@ -56,6 +58,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   toCreateNodes: [],
   toUpdateNodes: [],
   toDeleteNodes: [],
+  toCreateEdges: [],
   mindMapId: "",
   mindMapName: "",
   currentNodeId: "",
@@ -67,7 +70,42 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
   // Possible erreur de code avec le Buffer sur la position des node
   positionBuffer: { x: 0, y: 0 },
 
-  // add in 3 array toCreate toUpdate toDelete to track each node and add it to backend
+  // _____________ EDGE CRUD ____________ //
+  //
+  // pour les edges je n'est pas besoin de toUpdateEdges car
+  // je peux soit les creer soit les supprimer donc plus facile a check
+  //
+  // issue possible c'est si il est connecté a une node non creer dans le backend avec une id temporaire
+  // je devrais tracker la node avec lequel l'edge est connecté soit en ajoutant lancienne id temporaire dans la bdd
+  // soit en creant l'edge est la node en meme temps pour avoir les 2
+  // donc je devrais envoyer les nodes en meme temps que les edge
+  //
+
+  // quand je creer l'edge dans onConnect je reçois :
+  // {
+  //     "animated": false,
+  //     "source": "434dd2fc-44e4-4762-a707-8342d7fa6f3f",
+  //     "sourceHandle": "d",
+  //     "target": "c635cc25-1d49-48d2-8d09-1d4c718942d6",
+  //     "targetHandle": "c",
+  //     "style": {
+  //         "stroke": "#000000",
+  //         "strokeWidth": 2
+  //     }
+  // }
+  //
+  // mais rien quand je la delete donc je devrais traquer l'edge aux moment de delete aussi
+  // normalement dans le backend si je supprime une node l'edge est aussi supprimer faudra verifier
+  //
+  // si fini ajout de nouvelle nodes (losange, rond)
+  // faire que chaque ajout de nodes soit facile a implementer
+  // ameliorer la partie specific d'edit de nodes
+  // peut etre rajouter cmd+s pour save mais faire qu'il ne soit pas spammable en verifiant qu'il y a quelque a modifier avant d'apeller le backend
+  // passer un coup de polish est voila pour la mindmap
+
+  // _____________ EDGE CRUD ____________ //
+
+  // add in 3 array toCreateNodes toUpdateNodes toDeleteNodes to track each node and add it to backend
   addToCrudArrays: (changes: NodeChange[]) => {
     const isFoundInToCreate = get().toCreateNodes.some((node) =>
       node.id === changes[0].id ? true : false,
@@ -188,6 +226,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
 
   // onConnect allow to create Edge
   onConnect: async (connection: any) => {
+    console.log(connection);
     connection.animated = false;
     connection.style = {
       stroke: get().stroke,
@@ -195,6 +234,7 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     };
     set({
       edges: addEdge(connection, get().edges),
+      toCreateEdges: [...get().toCreateEdges, connection],
     });
   },
 
@@ -255,9 +295,49 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
     const toUpdate = get().toUpdateNodes;
     const toCreate = get().toCreateNodes;
     const toDelete = get().toDeleteNodes;
+    const toCreateEdges = get().toCreateEdges;
+    const toModifyHandlerEdges: Edge[] = [];
+
     const mindMapId = get().mindMapId;
-    if (toUpdate.length === 0 && toCreate.length === 0 && toDelete.length === 0)
+    if (
+      (toUpdate.length === 0 && toCreate.length === 0 && toDelete.length === 0,
+      toCreateEdges.length === 0)
+    )
       return false;
+
+    // si 2 handlers contiennent pas de "node-" createManyEdge
+    // si contient 1 "node-" alors l'envoyer avec createMany
+    //  . dans le foreach verifier chaque si il contient le "node-${id}" correspondant
+    //  . si oui creer la node puis la modifier dans l'edge correspondant '
+    //  . sinon prochain
+    //
+
+    // const toFilter = [...get().toCreateNodes];
+    // const FilteredToCreateNodes = toFilter.filter(
+    //   (node) => node.id !== changes[0].id,
+    // );
+    // set({
+    //   toCreateNodes: [...FilteredToCreateNodes],
+    // });
+
+    if (toCreateEdges.length > 0) {
+      toCreateEdges.map((edge) => {
+        if (edge.source.includes("node-") || edge.target.includes("node-")) {
+          toModifyHandlerEdges.push(edge);
+          const filteredEdge = toCreateEdges.filter(
+            (filterEdge) =>
+              edge.source !== filterEdge.source &&
+              edge.target !== filterEdge.target,
+          );
+          set({
+            toCreateEdges: [...filteredEdge],
+          });
+        }
+      });
+
+      console.log("toCreateEdge :", get().toCreateEdges);
+      console.log("toModifyHandlerEdges :", toModifyHandlerEdges);
+    }
 
     if (toCreate.length > 0) await CreateMany(toCreate, mindMapId);
     if (toUpdate.length > 0) await UpdateMany(toUpdate, mindMapId);
