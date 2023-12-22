@@ -337,13 +337,10 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
           });
         }
       });
-
-      console.log("toCreateEdge :", get().toCreateEdges);
-      console.log("toModifyHandlerEdges :", toModifyHandlerEdges);
     }
 
     if (toCreate.length > 0) {
-      await CreateMany(toCreate, mindMapId);
+      await CreateMany(toCreate, mindMapId, toModifyHandlerEdges);
     }
     if (toUpdate.length > 0) await UpdateMany(toUpdate, mindMapId);
     if (toDelete.length > 0) await DeleteMany(toDelete, mindMapId);
