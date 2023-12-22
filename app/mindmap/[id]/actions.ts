@@ -164,6 +164,29 @@ export const createEdge = async (req: CreateEdgeType) => {
   return res.id;
 };
 
+export const createManyEdge = async (req: Edge[], mindMapId: string) => {
+  req.map(async (edge: Edge) => {
+    await db.edge.create({
+      data: {
+        color: edge.style.stroke,
+        mindMap: { connect: { id: mindMapId } },
+        nodes: {
+          create: [
+            {
+              node: { connect: { id: edge.source } },
+              handle: edge.sourceHandle,
+            },
+            {
+              node: { connect: { id: edge.target } },
+              handle: edge.targetHandle,
+            },
+          ],
+        },
+      },
+    });
+  });
+};
+
 export const createNode = async (req: Node, mindmapId: string) => {
   const res = await db.node.create({
     data: {

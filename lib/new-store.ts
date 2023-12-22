@@ -22,6 +22,7 @@ import {
   CreateMany,
   UpdateMany,
   DeleteMany,
+  createManyEdge,
 } from "@/app/mindmap/[id]/actions";
 
 export type RFState = {
@@ -300,8 +301,10 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
 
     const mindMapId = get().mindMapId;
     if (
-      (toUpdate.length === 0 && toCreate.length === 0 && toDelete.length === 0,
-      toCreateEdges.length === 0)
+      toUpdate.length === 0 &&
+      toCreate.length === 0 &&
+      toDelete.length === 0 &&
+      toCreateEdges.length === 0
     )
       return false;
 
@@ -339,13 +342,18 @@ const useMindmapStore = createWithEqualityFn<RFState>((set, get) => ({
       console.log("toModifyHandlerEdges :", toModifyHandlerEdges);
     }
 
-    if (toCreate.length > 0) await CreateMany(toCreate, mindMapId);
+    if (toCreate.length > 0) {
+      await CreateMany(toCreate, mindMapId);
+    }
     if (toUpdate.length > 0) await UpdateMany(toUpdate, mindMapId);
     if (toDelete.length > 0) await DeleteMany(toDelete, mindMapId);
+    if (get().toCreateEdges.length > 0)
+      await createManyEdge(get().toCreateEdges, mindMapId);
     set({
       toCreateNodes: [],
       toUpdateNodes: [],
       toDeleteNodes: [],
+      toCreateEdges: [],
     });
 
     return true;
