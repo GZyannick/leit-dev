@@ -86,26 +86,43 @@ export const getEdge = async (mindMapId: string) => {
 //     },
 //     "dragging": false
 // }
-export const CreateMany = async (req: Node[], mindmapId: string) => {
+export const CreateMany = async (
+  req: Node[],
+  mindmapId: string,
+  toCreateEdgeWithNode: Edge[],
+) => {
   if (!req || req.length === 0) return;
-
-  req.map(async (node) => {
-    const res = await db.node.create({
-      data: {
-        label: node.data.label,
-        value: node.data.value,
-        background: node.data.style.background,
-        color: node.data.style.color,
-        fontSize: node.data.style.fontSize,
-        xPos: node.position.x,
-        yPos: node.position.y,
-        type: node.type ? node.type : "background",
-        mindMap: {
-          connect: { id: mindmapId },
+  let filteredEdgesWithBakendNodeId: Edge[] = [];
+  await Promise.all(
+    req.map(async (node) => {
+      // res of data of node
+      const res = await db.node.create({
+        data: {
+          label: node.data.label,
+          value: node.data.value,
+          background: node.data.style.background,
+          color: node.data.style.color,
+          fontSize: node.data.style.fontSize,
+          xPos: node.position.x,
+          yPos: node.position.y,
+          type: node.type ? node.type : "background",
+          mindMap: {
+            connect: { id: mindmapId },
+          },
         },
-      },
-    });
-  });
+      });
+      if (toCreateEdgeWithNode.length > 0) {
+        filteredEdgesWithBakendNodeId = toCreateEdgeWithNode.map((edge) => {
+          if (node.id === edge.source) edge.source = res.id;
+          if (node.id === edge.target) edge.target = res.id;
+          return edge;
+        });
+      }
+    }),
+  );
+
+  if (filteredEdgesWithBakendNodeId.length > 0)
+    await createManyEdge(filteredEdgesWithBakendNodeId, mindmapId);
 };
 
 export const UpdateMany = async (req: Node[], mindmapId: string) => {
@@ -142,30 +159,12 @@ export const DeleteMany = async (req: Node[], mindmapId: string) => {
   });
 };
 
-export const createEdge = async (req: CreateEdgeType) => {
-  const res = await db.edge.create({
-    data: {
-      color: req.color,
-      mindMap: { connect: { id: req.mindMapId } },
-      nodes: {
-        create: [
-          {
-            node: { connect: { id: req.source } },
-            handle: req.sourceHandle,
-          },
-          {
-            node: { connect: { id: req.target } },
-            handle: req.targetHandle,
-          },
-        ],
-      },
-    },
-  });
-  return res.id;
-};
-
 export const createManyEdge = async (req: Edge[], mindMapId: string) => {
   req.map(async (edge: Edge) => {
+    if (edge.source.includes("node-") || edge.target.includes("node-")) {
+      console.log(edge);
+      return;
+    }
     await db.edge.create({
       data: {
         color: edge.style.stroke,
