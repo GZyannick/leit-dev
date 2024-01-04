@@ -1,11 +1,11 @@
 "use client";
-import { toPng } from "html-to-image";
 import {
   useState,
   useCallback,
   useRef,
   MutableRefObject,
   useEffect,
+  useTransition,
 } from "react";
 import { shallow } from "zustand/shallow";
 import ReactFlow, {
@@ -15,9 +15,7 @@ import ReactFlow, {
   ReactFlowInstance,
   ConnectionMode,
   NodeChange,
-  // useReactFlow,
-  // getRectOfNodes,
-  // getTransformForBounds,
+  getRectOfNodes,
 } from "reactflow";
 import useMindmapStore from "@/lib/new-store";
 import {
@@ -28,13 +26,8 @@ import {
 } from "@/lib/mindmapOptions";
 import "reactflow/dist/style.css";
 
-//cloudinary
-// import { sendToCloudinary } from "@/app/mindmap/[id]/actions";
-// import { useTransition } from "react";
-
-// import NodeModal from "@/components/mindmap/modals/nodeModal";
 import ReactFlowMenu from "@/components/mindmap/reactFlowMenu";
-import Thumbnail from "@/components/mindmap/thumbnail";
+import createThumbnail from "@/lib/createThumbnail";
 import { useRouter } from "next/navigation";
 const selector = (state: any) => ({
   nodes: state.nodes,
@@ -48,7 +41,6 @@ const selector = (state: any) => ({
   updateData: state.updateData,
 });
 
-// const Mindmap = ({ takeThumbnail }: any) => {
 const Mindmap = () => {
   const {
     nodes,
@@ -61,7 +53,11 @@ const Mindmap = () => {
     setCurrentNodeId,
     updateData,
   } = useMindmapStore(selector, shallow);
-  // let [isPending, startTransition] = useTransition();
+
+  // THUMBNAIL PART
+  let [isPending, startTransition] = useTransition();
+  const nodesBounds = getRectOfNodes(nodes);
+  // THUMBNAIL PART
 
   const router = useRouter();
   const reactFlowWrapper = useRef() as MutableRefObject<HTMLDivElement>;
@@ -70,8 +66,15 @@ const Mindmap = () => {
 
   const handleLeave = (event: any) => {
     const routerNeedsChange = updateData();
-
-    if (routerNeedsChange) router.refresh();
+    if (routerNeedsChange) {
+      createThumbnail(
+        reactFlowWrapper,
+        mindMapId,
+        nodesBounds,
+        startTransition,
+      );
+      router.refresh();
+    }
   };
 
   useEffect(() => {
@@ -144,8 +147,6 @@ const Mindmap = () => {
             <Background />
             <Controls />
             <ReactFlowMenu isOpen={isOpen} />
-
-            <Thumbnail refHtml={reactFlowWrapper} mindMapId={mindMapId} />
           </ReactFlow>
         </div>
       </ReactFlowProvider>

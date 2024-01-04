@@ -5,13 +5,14 @@ sauvegarder est prendre le screenshot
 
 
 
+bug le edit node ne fonctionne pas correctement lorsque j'utilise specific node (color, fontSize, background color)
+
+
+
+
 // TODO mindmap
 
-    supprimer la popup quand on clique sur une node
-    pouvoir modifier chacune des nodes individuellement
     ajouter une ou plusieurs nodes
-
-
     faire fonctionner la thumbnail onleave
 
 
